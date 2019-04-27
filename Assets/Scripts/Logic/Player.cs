@@ -105,6 +105,8 @@ namespace zs.Logic
             _aliveSprite.enabled = false;
             _deadSprite.enabled = true;
 
+            gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
+
             enabled = false;
         }
 
