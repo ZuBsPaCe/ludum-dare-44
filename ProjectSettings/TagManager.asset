@@ -9,6 +9,9 @@ TagManager:
   - Bullet
   - DeadPlayer
   - DeadPlayerStuck
+  - ConveyorCW
+  - ConveyorCCW
+  - ConveyorIdle
   layers:
   - Default
   - TransparentFX

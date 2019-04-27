@@ -139,22 +139,22 @@ namespace zs.Logic
 
         public float GetNextCollisionPosDown()
         {
-            return GetNextCollisionPos(_downRaycastSources, Direction.Down);
+            return GetNextCollisionPos(_downRaycastSources, Direction.Down, out _);
         }
 
         public float GetNextCollisionPosUp()
         {
-            return GetNextCollisionPos(_upRaycastSources, Direction.Up);
+            return GetNextCollisionPos(_upRaycastSources, Direction.Up, out _);
         }
 
         public float GetNextCollisionPosRight()
         {
-            return GetNextCollisionPos(_rightRaycastSources, Direction.Right);
+            return GetNextCollisionPos(_rightRaycastSources, Direction.Right, out _);
         }
 
         public float GetNextCollisionPosLeft()
         {
-            return GetNextCollisionPos(_leftRaycastSources, Direction.Left);
+            return GetNextCollisionPos(_leftRaycastSources, Direction.Left, out _);
         }
 
         #endregion Public Methods
@@ -242,11 +242,11 @@ namespace zs.Logic
 	
         void FixedUpdate()
         {
-            float minY = GetNextCollisionPos(_downRaycastSources, Direction.Down);
-            float maxY = GetNextCollisionPos(_upRaycastSources, Direction.Up);
+            float minY = GetNextCollisionPos(_downRaycastSources, Direction.Down, out string downCollisionTag);
+            float maxY = GetNextCollisionPos(_upRaycastSources, Direction.Up, out string upCollisionTag);
 
-            float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right);
-            float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left);
+            float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right, out string rightCollisionTag);
+            float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left, out string leftCollisionTag);
 
             if (_isCarrying)
             {
@@ -277,6 +277,18 @@ namespace zs.Logic
             {
                 _jumpStarted = false;
                 verVelocity += new Vector3(0, _jumpSpeed, 0);
+            }
+
+            if (_grounded)
+            {
+                if (downCollisionTag == "ConveyorCW")
+                {
+                    horVelocity += Vector3.right * 5;
+                }
+                else if (downCollisionTag == "ConveyorCCW")
+                {
+                    horVelocity += Vector3.left * 5;
+                }
             }
 
             Vector3 newVelocity = horVelocity + verVelocity;
@@ -346,9 +358,10 @@ namespace zs.Logic
 
         #region Private Methods
 
-        private float GetNextCollisionPos(GameObject[] raySourceObjects, Direction direction)
+        private float GetNextCollisionPos(GameObject[] raySourceObjects, Direction direction, out string tag)
         {
             float collisionPos;
+            tag = null;
 
             switch (direction)
             {
@@ -375,24 +388,41 @@ namespace zs.Logic
                 
             foreach (GameObject raySourceObject in raySourceObjects)
             {
-                float currentCollisionPos = GetNextCollisionPos(raySourceObject, direction);
+                string currentTag;
+                float currentCollisionPos = GetNextCollisionPos(raySourceObject, direction, out currentTag);
 
                 switch (direction)
                 {
                     case Direction.Up:
-                        collisionPos = Mathf.Min(collisionPos, currentCollisionPos);
+                        if (currentCollisionPos < collisionPos)
+                        {
+                            collisionPos = currentCollisionPos;
+                            tag = currentTag;
+                        }
                         break;
 
                     case Direction.Left:
-                        collisionPos = Mathf.Max(collisionPos, currentCollisionPos);
+                        if (currentCollisionPos > collisionPos)
+                        {
+                            collisionPos = currentCollisionPos;
+                            tag = currentTag;
+                        }
                         break;
 
                     case Direction.Down:
-                        collisionPos = Mathf.Max(collisionPos, currentCollisionPos);
+                        if (currentCollisionPos > collisionPos)
+                        {
+                            collisionPos = currentCollisionPos;
+                            tag = currentTag;
+                        }
                         break;
 
                     case Direction.Right:
-                        collisionPos = Mathf.Min(collisionPos, currentCollisionPos);
+                        if (currentCollisionPos < collisionPos)
+                        {
+                            collisionPos = currentCollisionPos;
+                            tag = currentTag;
+                        }
                         break;
                 }   
             }
@@ -400,8 +430,10 @@ namespace zs.Logic
             return collisionPos;
         }
 
-        private float GetNextCollisionPos(GameObject raySourceObject, Direction direction)
+        private float GetNextCollisionPos(GameObject raySourceObject, Direction direction, out string tag)
         {
+            tag = null;
+
             Vector2 dirVec;
 
             switch (direction)
@@ -468,6 +500,8 @@ namespace zs.Logic
                         hitFound = true;
                         distance = hit.distance;
                         hitPos = hit.point;
+
+                        tag = hit.collider.tag;
                     }
                 }
 
