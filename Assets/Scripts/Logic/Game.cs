@@ -65,9 +65,9 @@ namespace zs.Logic
 
         #region Public Methods
 
-        public void KillPlayer(Player player)
+        public void KillPlayer(bool stuck = false)
         {
-            player.Kill();
+            _currentPlayer.Kill(stuck);
 
             _currentPlayer = Instantiate(_gameInfo.PlayerPrefab, _currentSpawnPoint.transform.position, Quaternion.identity);
             Camera.main.GetComponent<CameraFollow>().FollowTarget = _currentPlayer.transform;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace zs.Logic
 {
@@ -32,6 +33,8 @@ namespace zs.Logic
         private bool _scanDirectionUp;
         private float _lastAimTime = float.NegativeInfinity;
         private float _lastShootTime = float.NegativeInfinity;
+
+        private RaycastHit2D[] _raycastHits = new RaycastHit2D[3];
 
         #endregion Private Vars
 
@@ -89,6 +92,7 @@ namespace zs.Logic
                         bullet.Direction = barrelGlobalDir;
                     }
                 }
+
 
                 aimOnPlayer = true;
             }
@@ -165,6 +169,42 @@ namespace zs.Logic
             float angle = Vector3.Angle(up, globalDir);
 
             if (angle > 90)
+            {
+                return false;
+            }
+
+
+            int hits = Physics2D.RaycastNonAlloc(_barrelSprite.transform.position, globalDir, _raycastHits, _viewDistance + 1f, ~LayerMask.GetMask("Bullet"));
+            if (hits == 0)
+            {
+                return false;
+            }
+
+            float playerDistance = float.PositiveInfinity;
+            float otherDistance = float.PositiveInfinity;
+
+            for (int i = 0; i < hits; ++i)
+            {
+                RaycastHit2D hit = _raycastHits[i];
+
+                if (hit.collider.tag == "Player")
+                {
+                    if (hit.distance < playerDistance)
+                    {
+                        playerDistance = hit.distance;
+                    }
+                }
+                else
+                {
+                    if (hit.distance < otherDistance)
+                    {
+                        otherDistance = hit.distance;
+                    }
+                }
+            }
+
+            if (playerDistance > _viewDistance ||
+                otherDistance < playerDistance)
             {
                 return false;
             }

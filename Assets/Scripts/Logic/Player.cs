@@ -70,6 +70,8 @@ namespace zs.Logic
 
         #region Private Vars
 
+        private Rigidbody2D _rigidbody = null;
+
         private Vector3 _currentVelocity = Vector3.zero;
         private Vector3 _horTargetVelocity = Vector3.zero;
 
@@ -89,6 +91,9 @@ namespace zs.Logic
         private bool _jumpStarted;
         private bool _jumping;
 
+        private bool _isCarrying;
+        private Player _carriedPlayer = null;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -96,7 +101,7 @@ namespace zs.Logic
 
         #region Public Methods
 
-        public void Kill()
+        public void Kill(bool stuck = false)
         {
             Debug.Log("Killed!");
 
@@ -108,6 +113,36 @@ namespace zs.Logic
             gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
 
             enabled = false;
+
+            if (!stuck)
+            {
+                gameObject.tag = "DeadPlayer";
+                _rigidbody.isKinematic = false;
+            }
+            else
+            {
+                gameObject.tag = "DeadPlayerStuck";
+            }
+        }
+
+        public float GetNextCollisionPosDown()
+        {
+            return GetNextCollisionPos(_downRaycastSources, Direction.Down);
+        }
+
+        public float GetNextCollisionPosUp()
+        {
+            return GetNextCollisionPos(_upRaycastSources, Direction.Up);
+        }
+
+        public float GetNextCollisionPosRight()
+        {
+            return GetNextCollisionPos(_rightRaycastSources, Direction.Right);
+        }
+
+        public float GetNextCollisionPosLeft()
+        {
+            return GetNextCollisionPos(_leftRaycastSources, Direction.Left);
         }
 
         #endregion Public Methods
@@ -126,6 +161,8 @@ namespace zs.Logic
                 _raySourceLeftTop && _raySourceLeftCenter && _raySourceLeftBottom &&
                 _raySourceRightTop && _raySourceRightCenter && _raySourceRightBottom);
 
+
+            _rigidbody = GetComponent<Rigidbody2D>();
 
             _downRaycastSources = new GameObject[]
             {
@@ -199,6 +236,23 @@ namespace zs.Logic
             float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right);
             float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left);
 
+            if (_isCarrying)
+            {
+                float carryMaxY = _carriedPlayer.GetNextCollisionPosUp() - 1f;
+                maxY = Mathf.Min(maxY, carryMaxY);
+
+                float carryMaxX = _carriedPlayer.GetNextCollisionPosRight();
+                float carryMinX = _carriedPlayer.GetNextCollisionPosLeft();
+
+                if (carryMaxX < transform.position.x + 0.5f ||
+                    carryMinX > transform.position.x - 0.5f) 
+                {
+                    _carriedPlayer.GetComponent<Rigidbody2D>().isKinematic = false;
+                    _isCarrying = false;
+                    _carriedPlayer = null;
+                }
+            }
+
             //Debug.Log("Velocity X: " + _currentVelocity.x.ToString("0.00"));
 
             Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
@@ -258,15 +312,19 @@ namespace zs.Logic
                 _currentVelocity.x = 0;
             }
 
-
             transform.position = newPosition;
+
+            if (_isCarrying)
+            {
+                _carriedPlayer.transform.position = transform.position.with_y(transform.position.y + 1f);
+            }
         }
 
         void OnTriggerEnter2D(Collider2D collider)
         {
             if (collider.tag == "KillTiles")
             {
-                Game.Instance.KillPlayer(this);
+                Game.Instance.KillPlayer(true);
             }
             else if (collider.tag == "Portal")
             {
@@ -367,7 +425,7 @@ namespace zs.Logic
 
             float collisionPos = float.PositiveInfinity;
 
-            int layerMask = ~LayerMask.GetMask("Player");;
+            int layerMask = ~LayerMask.GetMask("Player", "Bullet");
             int hitCount = Physics2D.RaycastNonAlloc(raySourceObject.transform.position, dirVec, _raycastHits, maxDistance, layerMask);
 
 
@@ -383,6 +441,30 @@ namespace zs.Logic
 
                     if (!hit.collider.isTrigger && hit.distance < distance)
                     {
+                        if (hit.collider.tag == "DeadPlayer" && direction != Direction.Down)
+                        {
+                            if (!_isCarrying && _grounded && direction == Direction.Up && hit.collider.transform.position.y >= transform.position.y + 1f)
+                            {
+                                Player deadPlayerOnTop = hit.collider.GetComponent<Player>();
+                                deadPlayerOnTop.GetComponent<Rigidbody2D>().isKinematic = true;
+
+                                //deadPlayerOnTop.transform.position = deadPlayerOnTop.transform.position.with_x(transform.position.x);
+
+                                _isCarrying = true;
+                                _carriedPlayer = deadPlayerOnTop;
+
+                                //if (!_fixedJoint2D.enabled)
+                                //{
+                                //    _fixedJoint2D.enabled = true;
+                                //    _fixedJoint2D.autoConfigureConnectedAnchor = true;
+                                //    _fixedJoint2D.connectedBody = hit.collider.GetComponent<Rigidbody2D>();
+                                //    _fixedJoint2D.autoConfigureConnectedAnchor = false;
+                                //}
+                            }
+
+                            continue;
+                        }
+
                         hitFound = true;
                         distance = hit.distance;
                         hitPos = hit.point;

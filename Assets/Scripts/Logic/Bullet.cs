@@ -44,6 +44,19 @@ namespace zs.Logic
             transform.position = transform.position + _direction * _speed * Time.deltaTime;
         }
 
+        void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.tag != "Bullet")
+            {
+                Destroy(gameObject);
+
+                if (collider.tag == "Player")
+                {
+                    Game.Instance.KillPlayer();
+                }
+            }
+        }
+
         #endregion MonoBehaviour
 
         #region Private Methods
