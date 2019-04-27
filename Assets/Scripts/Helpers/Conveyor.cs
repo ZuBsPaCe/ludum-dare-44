@@ -20,6 +20,7 @@ namespace zs.Helpers
         #region Private Vars
 
         private SpriteRenderer _gearSpriteRenderer = null;
+        private AreaEffector2D _areaEffector2D = null;
 
         #endregion Private Vars
 
@@ -33,6 +34,7 @@ namespace zs.Helpers
             _CW = false;
             _CCW = false;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         public void TurnCW()
@@ -40,6 +42,7 @@ namespace zs.Helpers
             _CW = true;
             _CCW = false;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         public void TurnCCW()
@@ -47,6 +50,7 @@ namespace zs.Helpers
             _CW = false;
             _CCW = true;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         public void Reverse()
@@ -59,6 +63,7 @@ namespace zs.Helpers
             _CW = !_CW;
             _CCW = !_CCW;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         #endregion Public Methods
@@ -81,7 +86,11 @@ namespace zs.Helpers
                 _gearSpriteRenderer.enabled = false;
             }
 
+            _areaEffector2D = GetComponent<AreaEffector2D>();
+            Debug.Assert(_areaEffector2D);
+
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         void Start()
@@ -124,6 +133,26 @@ namespace zs.Helpers
                 gameObject.tag = "ConveyorCW";
             }
         }
+
+        private void UpdateAreaEffector()
+        {
+            if (!_CCW && !_CW)
+            {
+                _areaEffector2D.enabled = false;
+            }
+            else if (_CCW)
+            {
+                _areaEffector2D.enabled = true;
+                _areaEffector2D.forceAngle = 180f;
+            }
+            else
+            {
+                gameObject.tag = "ConveyorCW";
+                _areaEffector2D.forceAngle = 0f;
+            }
+            
+        }
+
         #endregion Private Methods
     }
 }

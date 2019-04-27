@@ -497,6 +497,12 @@ namespace zs.Logic
                             continue;
                         }
 
+                        if (hit.collider.tag == "SpikesRunning")
+                        {
+                            // Spikes.cs will handle Player Death.
+                            continue;
+                        }
+
                         hitFound = true;
                         distance = hit.distance;
                         hitPos = hit.point;

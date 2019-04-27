@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7453704353765140677}
   - component: {fileID: 7453704353765140678}
   - component: {fileID: 854421270916931231}
+  - component: {fileID: 8230585393358869821}
+  - component: {fileID: 4963151070556208507}
   m_Layer: 0
   m_Name: Conveyor Middle
   m_TagString: Untagged
@@ -45,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3de8e169fb3fd74c988bc34d0284e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _CW: 0
+  _CW: 1
   _CCW: 0
-  _showGear: 1
+  _showGear: 0
 --- !u!61 &854421270916931231
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -73,6 +75,52 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!249 &8230585393358869821
+AreaEffector2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453704353765140676}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  m_UseGlobalAngle: 0
+  m_ForceAngle: 0
+  m_ForceMagnitude: 3
+  m_ForceVariation: 0
+  m_ForceTarget: 0
+  m_Drag: 0
+  m_AngularDrag: 0
+--- !u!61 &4963151070556208507
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453704353765140676}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.66}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.1, y: 0.25}
   m_EdgeRadius: 0
 --- !u!1 &7453704353839204138
 GameObject:
