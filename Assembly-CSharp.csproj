@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpawnPoint.cs" />
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
+    <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
     <Compile Include="Assets\Scripts\Logic\Bullet.cs" />
     <Compile Include="Assets\Scripts\Logic\Canon.cs" />
     <Compile Include="Assets\Scripts\Logic\Game.cs" />

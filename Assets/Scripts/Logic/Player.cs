@@ -73,6 +73,8 @@ namespace zs.Logic
 
         #region Private Vars
 
+        private bool _killed;
+
         private Rigidbody2D _rigidbody = null;
 
         private Vector3 _currentVelocity = Vector3.zero;
@@ -112,8 +114,10 @@ namespace zs.Logic
 
         public void Kill(bool stuck = false)
         {
-            Debug.Log("Killed!");
+            Debug.Assert(!_killed);
 
+            Debug.Log("Killed!");
+            _killed = true;
 
             _spritesTransform.position = transform.position;
 
@@ -344,6 +348,11 @@ namespace zs.Logic
 
         void OnTriggerEnter2D(Collider2D collider)
         {
+            if (_killed)
+            {
+                return;
+            }
+
             if (collider.tag == "KillTiles")
             {
                 Game.Instance.KillPlayer(true);

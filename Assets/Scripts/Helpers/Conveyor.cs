@@ -142,12 +142,14 @@ namespace zs.Helpers
             }
             else if (_CCW)
             {
+                gameObject.tag = "ConveyorCCW";
                 _areaEffector2D.enabled = true;
                 _areaEffector2D.forceAngle = 180f;
             }
             else
             {
                 gameObject.tag = "ConveyorCW";
+                _areaEffector2D.enabled = true;
                 _areaEffector2D.forceAngle = 0f;
             }
             

@@ -29,6 +29,9 @@ namespace zs.Helpers
         private SpriteRenderer _spriteRenderer = null;
 
         private bool _toEnd = true;
+        private bool _lastCW = false;
+
+        private AreaEffector2D _areaEffector2D = null;
 
         #endregion Private Vars
 
@@ -36,9 +39,17 @@ namespace zs.Helpers
 
         public void Stop()
         {
+            if (!_CW && !_CCW)
+            {
+                return;
+            }
+
+            _lastCW = _CW;
+
             _CW = false;
             _CCW = false;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         public void TurnCW()
@@ -46,6 +57,7 @@ namespace zs.Helpers
             _CW = true;
             _CCW = false;
             UpdateTag();
+            UpdateAreaEffector();
         }
 
         public void TurnCCW()
@@ -53,6 +65,26 @@ namespace zs.Helpers
             _CW = false;
             _CCW = true;
             UpdateTag();
+            UpdateAreaEffector();
+        }
+
+        public void Toggle()
+        {
+            if (_CW || _CCW)
+            {
+                Stop();
+            }
+            else
+            {
+                if (_lastCW)
+                {
+                    TurnCW();
+                }
+                else
+                {
+                    TurnCCW();
+                }
+            }
         }
 
         public void Reverse()
@@ -77,6 +109,9 @@ namespace zs.Helpers
         {
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             Debug.Assert(_spriteRenderer);
+            
+            _areaEffector2D = GetComponent<AreaEffector2D>();
+            Debug.Assert(_areaEffector2D);
 
             UpdateTag();
         }
@@ -127,7 +162,7 @@ namespace zs.Helpers
 
         void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collider.tag == "Player")
+            if (collider.tag == "Player" && (_CW || _CCW))
             {
                 Game.Instance.KillPlayer();
             }
@@ -148,6 +183,26 @@ namespace zs.Helpers
                 gameObject.tag = "SpikesRunning";
             }
         }
+        
+        private void UpdateAreaEffector()
+        {
+            if (!_CCW && !_CW)
+            {
+                _areaEffector2D.enabled = false;
+            }
+            else if (_CCW)
+            {
+                _areaEffector2D.enabled = true;
+                _areaEffector2D.forceAngle = 180f;
+            }
+            else
+            {
+                _areaEffector2D.enabled = true;
+                _areaEffector2D.forceAngle = 0f;
+            }
+            
+        }
+
         #endregion Private Methods
     }
 }
