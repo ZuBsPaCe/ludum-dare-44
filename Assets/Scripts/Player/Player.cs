@@ -177,8 +177,7 @@ namespace zs.Player
             float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right);
             float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left);
 
-            Debug.Log("MinX: " + minX.ToString("0.00") + ", Distance: " + (transform.position.x - minX).ToString("0.00")  );
-
+            Debug.Log("Velocity X: " + _currentVelocity.x.ToString("0.00"));
 
             Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
             horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
@@ -228,11 +227,13 @@ namespace zs.Player
             if (newPosition.x > maxX)
             {
                 newPosition.x = maxX;
+                _currentVelocity.x = 0;
             }
 
             if (newPosition.x < minX)
             {
                 newPosition.x = minX;
+                _currentVelocity.x = 0;
             }
 
 
