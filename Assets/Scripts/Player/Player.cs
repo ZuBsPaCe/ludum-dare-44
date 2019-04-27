@@ -345,6 +345,7 @@ namespace zs.Player
                     RaycastHit2D hit = _raycastHits[i];
                     if (hit.distance < distance)
                     {
+                        distance = hit.distance;
                         hitPos = hit.point;
                     }
                 }
@@ -356,7 +357,7 @@ namespace zs.Player
                         break;
 
                     case Direction.Left:
-                        collisionPos = hitPos.x - 0.4f - 0.1f;
+                        collisionPos = hitPos.x + 0.4f + 0.1f;
                         break;
 
                     case Direction.Down:
@@ -364,7 +365,7 @@ namespace zs.Player
                         break;
 
                     case Direction.Right:
-                        collisionPos = hitPos.x + 0.4f + 0.1f;
+                        collisionPos = hitPos.x - 0.4f - 0.1f;
                         break;
 
                     default:
