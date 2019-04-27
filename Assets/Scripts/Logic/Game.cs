@@ -67,6 +67,13 @@ namespace zs.Logic
 
         public void KillPlayer(bool stuck = false)
         {
+            #if UNITY_EDITOR
+            if (_currentPlayer.Invincible)
+            {
+                return;
+            }
+            #endif
+
             _currentPlayer.Kill(stuck);
 
             _currentPlayer = Instantiate(_gameInfo.PlayerPrefab, _currentSpawnPoint.transform.position, Quaternion.identity);

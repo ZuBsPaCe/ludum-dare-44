@@ -66,6 +66,9 @@ namespace zs.Logic
         [SerializeField]
         private GameObject _raySourceRightBottom = null;
 
+        [SerializeField]
+        private bool _invincible = false;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -97,6 +100,12 @@ namespace zs.Logic
         #endregion Private Vars
 
         #region Public Vars
+
+        public bool Invincible
+        {
+            get { return _invincible; }
+        }
+
         #endregion Public Vars
 
         #region Public Methods
@@ -104,6 +113,7 @@ namespace zs.Logic
         public void Kill(bool stuck = false)
         {
             Debug.Log("Killed!");
+
 
             _spritesTransform.position = transform.position;
 
@@ -123,6 +133,8 @@ namespace zs.Logic
             {
                 gameObject.tag = "DeadPlayerStuck";
             }
+
+            Uncarry();
         }
 
         public float GetNextCollisionPosDown()
@@ -244,12 +256,10 @@ namespace zs.Logic
                 float carryMaxX = _carriedPlayer.GetNextCollisionPosRight();
                 float carryMinX = _carriedPlayer.GetNextCollisionPosLeft();
 
-                if (carryMaxX < transform.position.x + 0.5f ||
-                    carryMinX > transform.position.x - 0.5f) 
+                if (carryMaxX < transform.position.x ||
+                    carryMinX > transform.position.x) 
                 {
-                    _carriedPlayer.GetComponent<Rigidbody2D>().isKinematic = false;
-                    _isCarrying = false;
-                    _carriedPlayer = null;
+                   Uncarry(); 
                 }
             }
 
@@ -448,18 +458,8 @@ namespace zs.Logic
                                 Player deadPlayerOnTop = hit.collider.GetComponent<Player>();
                                 deadPlayerOnTop.GetComponent<Rigidbody2D>().isKinematic = true;
 
-                                //deadPlayerOnTop.transform.position = deadPlayerOnTop.transform.position.with_x(transform.position.x);
-
                                 _isCarrying = true;
                                 _carriedPlayer = deadPlayerOnTop;
-
-                                //if (!_fixedJoint2D.enabled)
-                                //{
-                                //    _fixedJoint2D.enabled = true;
-                                //    _fixedJoint2D.autoConfigureConnectedAnchor = true;
-                                //    _fixedJoint2D.connectedBody = hit.collider.GetComponent<Rigidbody2D>();
-                                //    _fixedJoint2D.autoConfigureConnectedAnchor = false;
-                                //}
                             }
 
                             continue;
@@ -540,6 +540,18 @@ namespace zs.Logic
             }
 
             return collisionPos;
+        }
+
+        private void Uncarry()
+        {
+            if (!_isCarrying)
+            {
+                return;
+            }
+
+            _carriedPlayer.GetComponent<Rigidbody2D>().isKinematic = false;
+            _isCarrying = false;
+            _carriedPlayer = null;
         }
 
         #endregion Private Methods

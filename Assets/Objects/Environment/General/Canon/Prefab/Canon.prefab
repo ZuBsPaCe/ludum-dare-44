@@ -262,9 +262,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrelSprite: {fileID: 8677430942526469170}
-  _viewDistance: 7
+  _viewDistance: 8
   _waitAfterAim: 3
-  _shootDelay: 1
-  _rotateSpeed: 90
+  _shootDelay: 0.3
+  _rotateSpeed: 180
   _bulletPrefab: {fileID: 827124749319885, guid: b3b1499d8520b974c8967a30bd3e8161,
     type: 3}
