@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace zs.Player
 {
@@ -16,19 +17,49 @@ namespace zs.Player
         private float _gravity = 5f;
 
         [SerializeField]
+        private float _jumpSpeed = 5f;
+
+        [SerializeField]
         private Transform _spriteTransform = null;
 
         [SerializeField]
         private float _spriteLerp = 20f;
 
         [SerializeField]
-        private GameObject _bottomLeft = null;
+        private GameObject _raySourceDownLeft = null;
 
         [SerializeField]
-        private GameObject _bottomCenter = null;
+        private GameObject _raySourceDownCenter = null;
 
         [SerializeField]
-        private GameObject _bottomRight = null;
+        private GameObject _raySourceDownRight = null;
+
+        [SerializeField]
+        private GameObject _raySourceUpLeft = null;
+
+        [SerializeField]
+        private GameObject _raySourceUpCenter = null;
+
+        [SerializeField]
+        private GameObject _raySourceUpRight = null;
+
+        [SerializeField]
+        private GameObject _raySourceLeftTop = null;
+
+        [SerializeField]
+        private GameObject _raySourceLeftCenter = null;
+
+        [SerializeField]
+        private GameObject _raySourceLeftBottom = null;
+
+        [SerializeField]
+        private GameObject _raySourceRightTop = null;
+
+        [SerializeField]
+        private GameObject _raySourceRightCenter = null;
+
+        [SerializeField]
+        private GameObject _raySourceRightBottom = null;
 
         #endregion Serializable Fields
 
@@ -42,6 +73,16 @@ namespace zs.Player
 
 
         private RaycastHit2D[] _raycastHits = new RaycastHit2D[5];
+
+        private GameObject[] _upRaycastSources = null;
+        private GameObject[] _downRaycastSources = null;
+        private GameObject[] _leftRaycastSources = null;
+        private GameObject[] _rightRaycastSources = null;
+
+
+        private bool _grounded;
+        private bool _jumpStarted;
+        private bool _jumping;
 
         #endregion Private Vars
 
@@ -57,7 +98,32 @@ namespace zs.Player
         {
             Debug.Assert(_spriteTransform);
 
-            Debug.Assert(_bottomLeft && _bottomCenter && _bottomRight);
+            Debug.Assert(
+                _raySourceDownLeft && _raySourceDownCenter && _raySourceDownRight &&
+                _raySourceUpLeft && _raySourceUpCenter && _raySourceUpRight &&
+                _raySourceLeftTop && _raySourceLeftCenter && _raySourceLeftBottom &&
+                _raySourceRightTop && _raySourceRightCenter && _raySourceRightBottom);
+
+
+            _downRaycastSources = new GameObject[]
+            {
+                _raySourceDownLeft, _raySourceDownCenter, _raySourceDownRight
+            };
+
+            _upRaycastSources = new GameObject[]
+            {
+                _raySourceUpLeft, _raySourceUpCenter, _raySourceUpRight
+            };
+
+            _leftRaycastSources = new GameObject[]
+            {
+                _raySourceLeftTop, _raySourceLeftCenter, _raySourceLeftBottom 
+            };
+
+            _rightRaycastSources = new GameObject[]
+            {
+                _raySourceRightTop, _raySourceRightCenter, _raySourceRightBottom
+            };
         }
 
         void Start()
@@ -82,17 +148,192 @@ namespace zs.Player
                 _horTargetVelocity.x = -_horSpeed;
             }
 
+            if (_grounded &&
+                !_jumping &&
+                Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("Jump!");
+                _jumpStarted = true;
+                _jumping = true;
+            }
+            else if (
+                _jumping &&
+                Input.GetButtonUp("Jump"))
+            {
+                _jumpStarted = false;
+                _jumping = false;
+            }
+
+
             _spritePos = Vector3.Lerp(_spritePos, transform.position, _spriteLerp * Time.deltaTime);
             _spriteTransform.position = _spritePos;
         }
 	
         void FixedUpdate()
         {
-            float minY = float.MinValue;
+            float minY = GetNextCollisionPos(_downRaycastSources, Direction.Down);
+            float maxY = GetNextCollisionPos(_upRaycastSources, Direction.Up);
 
+            float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right);
+            float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left);
+
+            Debug.Log("MinX: " + minX.ToString("0.00") + ", Distance: " + (transform.position.x - minX).ToString("0.00")  );
+
+
+            Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
+            horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
+
+
+            Vector3 verVelocity = new Vector3(0, _currentVelocity.y, 0);
+            verVelocity += Time.fixedDeltaTime * _gravity * Vector3.down;
+
+
+            if (_jumpStarted)
+            {
+                _jumpStarted = false;
+                verVelocity += new Vector3(0, _jumpSpeed, 0);
+            }
+
+            Vector3 newVelocity = horVelocity + verVelocity;
+
+            _currentVelocity = newVelocity;
+
+
+            Vector3 newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
+
+            if (newPosition.y < minY)
+            {
+                newPosition.y = minY;
+
+                _currentVelocity.y = 0;
+
+                _grounded = true;
+                _jumpStarted = false;
+                _jumping = false;
+            }
+            else
+            {
+                _grounded = false;
+            }
+
+            if (newPosition.y > maxY)
+            {
+                newPosition.y = maxY;
+
+                _currentVelocity.y = 0;
+                _jumpStarted = false;
+                _jumping = false;
+            }
+
+            if (newPosition.x > maxX)
+            {
+                newPosition.x = maxX;
+            }
+
+            if (newPosition.x < minX)
+            {
+                newPosition.x = minX;
+            }
+
+
+            transform.position = newPosition;
+        }
+
+        #endregion MonoBehaviour
+
+        #region Private Methods
+
+        private float GetNextCollisionPos(GameObject[] raySourceObjects, Direction direction)
+        {
+            float collisionPos;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    collisionPos = float.PositiveInfinity;
+                    break;
+
+                case Direction.Left:
+                    collisionPos = float.NegativeInfinity;
+                    break;
+
+                case Direction.Down:
+                    collisionPos = float.NegativeInfinity;
+                    break;
+
+                case Direction.Right:
+                    collisionPos = float.PositiveInfinity;
+                    break;
+
+                default:
+                    Debug.Assert(false, $"Unknown Direction [{direction}]");
+                    return 0;
+            }   
+                
+            foreach (GameObject raySourceObject in raySourceObjects)
+            {
+                float currentCollisionPos = GetNextCollisionPos(raySourceObject, direction);
+
+                switch (direction)
+                {
+                    case Direction.Up:
+                        collisionPos = Mathf.Min(collisionPos, currentCollisionPos);
+                        break;
+
+                    case Direction.Left:
+                        collisionPos = Mathf.Max(collisionPos, currentCollisionPos);
+                        break;
+
+                    case Direction.Down:
+                        collisionPos = Mathf.Max(collisionPos, currentCollisionPos);
+                        break;
+
+                    case Direction.Right:
+                        collisionPos = Mathf.Min(collisionPos, currentCollisionPos);
+                        break;
+                }   
+            }
+
+            return collisionPos;
+        }
+
+        private float GetNextCollisionPos(GameObject raySourceObject, Direction direction)
+        {
+            Vector2 dirVec;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    dirVec = Vector2.up;
+                    break;
+
+                case Direction.Left:
+                    dirVec = Vector2.left;
+                    break;
+
+                case Direction.Down:
+                    dirVec = Vector2.down;
+                    break;
+
+                case Direction.Right:
+                    dirVec = Vector2.right;
+                    break;
+
+                default:
+                    Debug.Assert(false, $"Unknown Direction [{direction}]");
+                    dirVec = Vector2.zero;
+                    break;
+            }
+
+
+            const float maxDistance = 10f;
+
+
+
+            float collisionPos = float.PositiveInfinity;
 
             int layerMask = ~LayerMask.GetMask("Player");;
-            int hitCount = Physics2D.RaycastNonAlloc(_bottomCenter.transform.position, Vector2.down, _raycastHits, 10f, layerMask);
+            int hitCount = Physics2D.RaycastNonAlloc(raySourceObject.transform.position, dirVec, _raycastHits, maxDistance, layerMask);
 
             if (hitCount > 0)
             {
@@ -108,37 +349,69 @@ namespace zs.Player
                     }
                 }
 
-                minY = hitPos.y + 0.4f + 0.1f;
+                switch (direction)
+                {
+                    case Direction.Up:
+                        collisionPos = hitPos.y - 0.4f - 0.1f;
+                        break;
 
-                Debug.Log("MinY: " + minY.ToString("0.00"));
+                    case Direction.Left:
+                        collisionPos = hitPos.x - 0.4f - 0.1f;
+                        break;
+
+                    case Direction.Down:
+                        collisionPos = hitPos.y + 0.4f + 0.1f;
+                        break;
+
+                    case Direction.Right:
+                        collisionPos = hitPos.x + 0.4f + 0.1f;
+                        break;
+
+                    default:
+                        Debug.Assert(false, $"Unknown Direction [{direction}]");
+                        collisionPos = 0;
+                        break;
+                }
+
+                Debug.DrawLine(
+                    raySourceObject.transform.position, 
+                    hitPos,
+                    Color.red);
+            }
+            else
+            {
+                switch (direction)
+                {
+                    case Direction.Up:
+                        collisionPos = float.PositiveInfinity;
+                        break;
+
+                    case Direction.Left:
+                        collisionPos = float.NegativeInfinity;
+                        break;
+
+                    case Direction.Down:
+                        collisionPos = float.NegativeInfinity;
+                        break;
+
+                    case Direction.Right:
+                        collisionPos = float.PositiveInfinity;
+                        break;
+
+                    default:
+                        Debug.Assert(false, $"Unknown Direction [{direction}]");
+                        break;
+                }
+
+                Debug.DrawLine(
+                    raySourceObject.transform.position,
+                    raySourceObject.transform.position + dirVec.with_z(0) * maxDistance,
+                    Color.green);
             }
 
-
-
-
-            Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
-            horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
-
-
-            Vector3 verVelocity = new Vector3(0, _currentVelocity.y, 0);
-            verVelocity += Time.fixedDeltaTime * _gravity * Vector3.down;
-
-
-            Vector3 newVelocity = horVelocity + verVelocity;
-
-            _currentVelocity = newVelocity;
-
-
-            Vector3 newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
-
-            newPosition.y = Mathf.Max(newPosition.y, minY);
-
-            transform.position = newPosition;
+            return collisionPos;
         }
 
-        #endregion MonoBehaviour
-
-        #region Private Methods
         #endregion Private Methods
     }
 }
