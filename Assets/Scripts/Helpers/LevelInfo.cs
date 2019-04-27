@@ -12,10 +12,6 @@ namespace zs.Helpers
         #endregion Private Vars
 
         #region Public Vars
-
-        [SerializeField]
-        public Vector3 SpawnPoint;
-
         #endregion Public Vars
 
         #region Public Methods

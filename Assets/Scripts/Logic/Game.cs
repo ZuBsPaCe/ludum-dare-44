@@ -18,6 +18,9 @@ namespace zs.Logic
         private GameInfo _gameInfo = null;
         private int _currentLevel = 0;
 
+        private SpawnPoint _currentSpawnPoint = null;
+        private Player _currentPlayer = null;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -45,9 +48,8 @@ namespace zs.Logic
         {
             player.Kill();
 
-            Player newPlayer = Instantiate(_gameInfo.PlayerPrefab, _gameInfo.LevelInfos[_currentLevel].SpawnPoint, Quaternion.identity);
-
-            Camera.main.GetComponent<CameraFollow>().FollowTarget = newPlayer.transform;
+            _currentPlayer = Instantiate(_gameInfo.PlayerPrefab, _currentSpawnPoint.transform.position, Quaternion.identity);
+            Camera.main.GetComponent<CameraFollow>().FollowTarget = _currentPlayer.transform;
         }
 
         public void LoadLevel(int level)
@@ -67,6 +69,12 @@ namespace zs.Logic
 
         void Awake()
         {
+            if (_instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Debug.Log("Game Awake");
 
             _gameInfo = Resources.Load<GameInfo>("GameInfo");
@@ -75,11 +83,25 @@ namespace zs.Logic
             Instance = this;
 
             DontDestroyOnLoad(gameObject);
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         #endregion MonoBehaviour
 
         #region Private Methods
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name.StartsWith("Level"))
+            {
+                _currentSpawnPoint = FindObjectOfType<SpawnPoint>();
+                Debug.Assert(_currentSpawnPoint);
+
+                _currentPlayer = Instantiate(_gameInfo.PlayerPrefab, _currentSpawnPoint.transform.position, Quaternion.identity);
+                Camera.main.GetComponent<CameraFollow>().FollowTarget = _currentPlayer.transform;
+            }
+        }
 
         #endregion Private Methods
     }
