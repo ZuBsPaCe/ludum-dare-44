@@ -12,9 +12,17 @@ namespace zs.Helpers
         #endregion Serializable Fields
 
         #region Private Vars
+
         #endregion Private Vars
 
         #region Public Vars
+
+        public Transform FollowTarget
+        {
+            get { return _followTarget; }
+            set { _followTarget = value; }
+        }
+
         #endregion Public Vars
 
         #region Public Methods

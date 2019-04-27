@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace zs.Player
+namespace zs.Logic
 {
     public class Player : MonoBehaviour
     {
@@ -20,10 +19,16 @@ namespace zs.Player
         private float _jumpSpeed = 5f;
 
         [SerializeField]
-        private Transform _spriteTransform = null;
+        private Transform _spritesTransform = null;
 
         [SerializeField]
         private float _spriteLerp = 20f;
+
+        [SerializeField]
+        private SpriteRenderer _aliveSprite = null;
+
+        [SerializeField]
+        private SpriteRenderer _deadSprite = null;
 
         [SerializeField]
         private GameObject _raySourceDownLeft = null;
@@ -90,13 +95,28 @@ namespace zs.Player
         #endregion Public Vars
 
         #region Public Methods
+
+        public void Kill()
+        {
+            Debug.Log("Killed!");
+
+            _spritesTransform.position = transform.position;
+
+            _aliveSprite.enabled = false;
+            _deadSprite.enabled = true;
+
+            enabled = false;
+        }
+
         #endregion Public Methods
 
         #region MonoBehaviour
 	
         void Awake()
         {
-            Debug.Assert(_spriteTransform);
+            Debug.Assert(_spritesTransform);
+
+            Debug.Assert(_aliveSprite, _deadSprite);
 
             Debug.Assert(
                 _raySourceDownLeft && _raySourceDownCenter && _raySourceDownRight &&
@@ -166,7 +186,7 @@ namespace zs.Player
 
 
             _spritePos = Vector3.Lerp(_spritePos, transform.position, _spriteLerp * Time.deltaTime);
-            _spriteTransform.position = _spritePos;
+            _spritesTransform.position = _spritePos;
         }
 	
         void FixedUpdate()
@@ -177,7 +197,7 @@ namespace zs.Player
             float maxX = GetNextCollisionPos(_rightRaycastSources, Direction.Right);
             float minX = GetNextCollisionPos(_leftRaycastSources, Direction.Left);
 
-            Debug.Log("Velocity X: " + _currentVelocity.x.ToString("0.00"));
+            //Debug.Log("Velocity X: " + _currentVelocity.x.ToString("0.00"));
 
             Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
             horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
@@ -238,6 +258,14 @@ namespace zs.Player
 
 
             transform.position = newPosition;
+        }
+
+        void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (collider.tag == "KillTiles")
+            {
+                Game.Instance.KillPlayer(this);
+            }
         }
 
         #endregion MonoBehaviour
@@ -336,51 +364,63 @@ namespace zs.Player
             int layerMask = ~LayerMask.GetMask("Player");;
             int hitCount = Physics2D.RaycastNonAlloc(raySourceObject.transform.position, dirVec, _raycastHits, maxDistance, layerMask);
 
+
             if (hitCount > 0)
             {
                 float distance = float.PositiveInfinity;
                 Vector2 hitPos = Vector2.zero;
+                bool hitFound = false;
 
                 for (var i = 0; i < hitCount; i++)
                 {
                     RaycastHit2D hit = _raycastHits[i];
-                    if (hit.distance < distance)
+
+                    if (!hit.collider.isTrigger && hit.distance < distance)
                     {
+                        hitFound = true;
                         distance = hit.distance;
                         hitPos = hit.point;
                     }
                 }
 
-                switch (direction)
+                if (hitFound)
                 {
-                    case Direction.Up:
-                        collisionPos = hitPos.y - 0.4f - 0.1f;
-                        break;
+                    switch (direction)
+                    {
+                        case Direction.Up:
+                            collisionPos = hitPos.y - 0.4f - 0.1f;
+                            break;
 
-                    case Direction.Left:
-                        collisionPos = hitPos.x + 0.4f + 0.1f;
-                        break;
+                        case Direction.Left:
+                            collisionPos = hitPos.x + 0.4f + 0.1f;
+                            break;
 
-                    case Direction.Down:
-                        collisionPos = hitPos.y + 0.4f + 0.1f;
-                        break;
+                        case Direction.Down:
+                            collisionPos = hitPos.y + 0.4f + 0.1f;
+                            break;
 
-                    case Direction.Right:
-                        collisionPos = hitPos.x - 0.4f - 0.1f;
-                        break;
+                        case Direction.Right:
+                            collisionPos = hitPos.x - 0.4f - 0.1f;
+                            break;
 
-                    default:
-                        Debug.Assert(false, $"Unknown Direction [{direction}]");
-                        collisionPos = 0;
-                        break;
+                        default:
+                            Debug.Assert(false, $"Unknown Direction [{direction}]");
+                            collisionPos = 0;
+                            break;
+                    }
+
+                    Debug.DrawLine(
+                        raySourceObject.transform.position,
+                        hitPos,
+                        Color.red);
                 }
-
-                Debug.DrawLine(
-                    raySourceObject.transform.position, 
-                    hitPos,
-                    Color.red);
+                else
+                {
+                    hitCount = 0;
+                }
             }
-            else
+
+            if (hitCount == 0)
             {
                 switch (direction)
                 {
