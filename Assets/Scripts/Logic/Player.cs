@@ -268,6 +268,10 @@ namespace zs.Logic
             {
                 Game.Instance.KillPlayer(this);
             }
+            else if (collider.tag == "Portal")
+            {
+                Game.Instance.LoadNextLevel();
+            }
         }
 
         #endregion MonoBehaviour

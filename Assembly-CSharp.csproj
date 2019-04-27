@@ -63,8 +63,11 @@
     <Compile Include="Assets\Scripts\Extensions.cs" />
     <Compile Include="Assets\Scripts\Helpers\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Helpers\Direction.cs" />
+    <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Logic\Game.cs" />
     <Compile Include="Assets\Scripts\Logic\Player.cs" />
+    <Compile Include="Assets\Scripts\Main\GameInfo.cs" />
+    <Compile Include="Assets\Scripts\Main\MainMenu.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Reference Include="Unity.RenderPipelines.Core.Editor">
       <HintPath>D:/code/personal/github/ludum-dare-44/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
