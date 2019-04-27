@@ -21,6 +21,8 @@ namespace zs.Logic
         private SpawnPoint _currentSpawnPoint = null;
         private Player _currentPlayer = null;
 
+        private Transform _bulletContainer;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -38,6 +40,25 @@ namespace zs.Logic
                 return _instance;
             }
             set { _instance = value; }
+        }
+
+        public Player CurrentPlayer
+        {
+            get { return _currentPlayer; }
+        }
+
+        public Transform BulletContainer
+        {
+            get
+            {
+                if (_bulletContainer == null)
+                {
+                    GameObject go = new GameObject("Bullets");
+                    _bulletContainer = go.transform;
+                }
+
+                return _bulletContainer;
+            } 
         }
 
         #endregion Public Vars
