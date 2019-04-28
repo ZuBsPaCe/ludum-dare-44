@@ -64,6 +64,8 @@ namespace zs.Levels
 
             if (_sequence == 0 && Time.time - _outroStartTime > 2)
             {
+                Camera.main.GetComponent<CameraFollow>().FollowTarget = null;
+
                 _tilemap.SetTile(new Vector3Int(52, 8, 0), null);
                 _tilemap.SetTile(new Vector3Int(57, 8, 0), null);
                 Sound.Instance.PlayTileDestroy(Game.Instance.CurrentPlayer.AudioSource);
@@ -87,7 +89,7 @@ namespace zs.Levels
 
                 _sequence = 3;
             }
-            else if (_sequence == 3 && Time.time - _outroStartTime > 4.5)
+            else if (_sequence == 3 && Time.time - _outroStartTime > 4.2)
             {
                 Sound.Instance.PlayFallIntoVoid(Game.Instance.CurrentPlayer.AudioSource);
 
