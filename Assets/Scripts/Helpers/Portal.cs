@@ -68,7 +68,7 @@ namespace zs.Helpers
 
             _portalEntered = true;
 
-            if (_heartSprite)
+            if (_showHeart)
             {
                 _heartSprite.enabled = false;
 
@@ -85,7 +85,7 @@ namespace zs.Helpers
                 PlayerPrefs.Save();
             }
 
-            if (PrePortalEvent == null)
+            if (PrePortalEvent.GetPersistentEventCount() == 0)
             {
                 PerformPortal();
             }
