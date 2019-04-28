@@ -284,7 +284,6 @@ namespace zs.Logic
                 Input.GetButtonDown("Jump") &&
                 !_levelDone)
             {
-                Debug.Log("Jump!");
                 _jumpStarted = true;
                 _jumping = true;
 
@@ -307,6 +306,7 @@ namespace zs.Logic
         void FixedUpdate()
         {
             float initialXVelocity = _currentVelocity.x;
+            float initialYVelocity = _currentVelocity.y;
 
 
             float minY = GetNextCollisionPos(_downRaycastSources, Direction.Down, out string downCollisionTag);
@@ -389,6 +389,11 @@ namespace zs.Logic
 
             if (newPosition.y > maxY)
             {
+                if (initialYVelocity >= 1f || initialYVelocity <= -1f)
+                {
+                    Sound.Instance.PlayBump(_audioSource);
+                }
+
                 newPosition.y = maxY;
 
                 _currentVelocity.y = 0;
