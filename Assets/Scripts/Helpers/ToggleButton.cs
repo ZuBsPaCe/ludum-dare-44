@@ -27,7 +27,7 @@ namespace zs.Helpers
         private bool _on = true;
 
         [SerializeField]
-        private SpriteRenderer _buttonSprite;
+        private SpriteRenderer _buttonSprite = null;
 
         public ToggleButtonEvent Toggled;
         public TurnOnButtonEvent TurnedOn;

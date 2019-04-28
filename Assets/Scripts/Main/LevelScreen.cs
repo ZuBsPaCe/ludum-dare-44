@@ -8,9 +8,12 @@ namespace zs.Main
     public class LevelScreen : MonoBehaviour
     {
         #region Serializable Fields
-        
+
         [SerializeField]
-        private Image _life;
+        private Image _life = null;
+
+        [SerializeField]
+        private MainMenu _mainMenu = null;
 
         #endregion Serializable Fields
 
@@ -40,6 +43,7 @@ namespace zs.Main
         void Awake()
         {
             Debug.Assert(_life);
+            Debug.Assert(_mainMenu);
         }
 
         void Start()

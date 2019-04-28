@@ -11,7 +11,19 @@ namespace zs.Main
         #region Serializable Fields
 
         [SerializeField]
-        private Image _life;
+        private Image _life = null;
+
+        [SerializeField]
+        private Button _startNewButton = null;
+
+        [SerializeField]
+        private Button _startOrContinueButton = null;
+
+        [SerializeField]
+        private MainMenu _mainMenu = null;
+
+        [SerializeField]
+        private FadeScreen _fadeScreen = null;
 
         #endregion Serializable Fields
 
@@ -29,12 +41,34 @@ namespace zs.Main
 
         #region Public Methods
 
-        public void StartNewPressed()
+        public void StartOrContinuePressed()
         {
+            if (_fadeScreen.Fading)
+            {
+                return;
+            }
+
+            if (PlayerPrefs.HasKey("CanContinue"))
+            {
+                _mainMenu.ShowLevelScreen();
+            }
+            else
+            {
+                _fadeScreen.PerformFade("Intro", "A walk in the woods", StartIntroLevel);
+            }
         }
 
-        public void ContinuePressed()
+        public void StartNewPressed()
         {
+            if (_fadeScreen.Fading)
+            {
+                return;
+            }
+
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
+            _mainMenu.ShowLevelScreen();
         }
 
         #endregion Public Methods
@@ -43,11 +77,26 @@ namespace zs.Main
 	
         void Awake()
         {
+            Debug.Assert(_fadeScreen);
             Debug.Assert(_life);
+            Debug.Assert(_startNewButton);
+            Debug.Assert(_startOrContinueButton);
+            Debug.Assert(_mainMenu);
         }
 
         void Start()
         {
+            if (PlayerPrefs.HasKey("CanContinue"))
+            {
+                _startNewButton.gameObject.SetActive(true);
+
+                _startOrContinueButton.GetComponentInChildren<Text>().text = "Continue";
+            }
+            else
+            {
+                _startNewButton.gameObject.SetActive(false);
+                _startOrContinueButton.GetComponentInChildren<Text>().text = "Start";
+            }
         }
 	
         void Update()
@@ -58,6 +107,12 @@ namespace zs.Main
         #endregion MonoBehaviour
 
         #region Private Methods
+
+        private void StartIntroLevel()
+        {
+            Game.Instance.LoadLevel(0);
+        }
+
         #endregion Private Methods
     }
 }
