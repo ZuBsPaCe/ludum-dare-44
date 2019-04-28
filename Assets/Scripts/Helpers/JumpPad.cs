@@ -30,7 +30,7 @@ public class JumpPad : MonoBehaviour
 
         if (collider.tag == "Player")
         {
-            Debug.Log("JumpPad");
+            //Debug.Log("JumpPad");
             Game.Instance.CurrentPlayer.JumpPad();
         }
     }

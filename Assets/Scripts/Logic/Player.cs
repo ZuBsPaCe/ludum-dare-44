@@ -181,12 +181,16 @@ namespace zs.Logic
 
             if (_currentVelocity.y < -defaultSpeed)
             {
-                Debug.Log("Reversing Velocity");
+                //Debug.Log("Reversing Velocity");
                 _currentVelocity.y = -_currentVelocity.y;
+
+                // Need to add this.. don't know why... Otherwise we lose velocity... Rounding errors?
+                _currentVelocity.y += 1f;
+                //_currentVelocity.y += defaultSpeed;
             }
             else
             {
-                Debug.Log("Default Velocity");
+                //Debug.Log("Default Velocity");
                 _currentVelocity.y = defaultSpeed;
             }
         }
@@ -338,12 +342,14 @@ namespace zs.Logic
 
             Vector3 newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
 
-            if (newPosition.y < minY)
+            if (downCollisionTag != "JumpPad" &&
+                newPosition.y < minY)
             {
                 newPosition.y = minY;
 
                 _currentVelocity.y = 0;
 
+                //Debug.Log("Grounded");
                 _grounded = true;
                 _jumpStarted = false;
                 _jumping = false;
@@ -527,7 +533,7 @@ namespace zs.Logic
                 {
                     RaycastHit2D hit = _raycastHits[i];
 
-                    if (!hit.collider.isTrigger && hit.distance < distance)
+                    if ((!hit.collider.isTrigger || hit.collider.tag == "JumpPad") && hit.distance < distance)
                     {
                         if (hit.collider.tag == "DeadPlayer" && direction != Direction.Down)
                         {
