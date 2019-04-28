@@ -70,6 +70,12 @@ namespace zs.Logic
         [SerializeField]
         private bool _invincible = false;
 
+        [SerializeField]
+        private AudioSource _audioSource = null;
+
+        [SerializeField]
+        private AudioSource _walkAudioSource = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -102,6 +108,8 @@ namespace zs.Logic
 
         private bool _levelDone = false;
 
+        private float _maxWalkVolume;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -119,6 +127,8 @@ namespace zs.Logic
         {
             _levelDone = true;
             _currentVelocity = _currentVelocity.with_x(0);
+
+            Sound.Instance.StopWalk(_walkAudioSource);
         }
 
         public void Kill(bool stuck = false)
@@ -127,6 +137,8 @@ namespace zs.Logic
             {
                 return;
             }
+
+            Sound.Instance.StopWalk(_walkAudioSource);
 
             Debug.Assert(!_killed);
 
@@ -214,6 +226,12 @@ namespace zs.Logic
 
             _rigidbody = GetComponent<Rigidbody2D>();
 
+            Debug.Assert(_audioSource);
+            Debug.Assert(_walkAudioSource);
+
+            _maxWalkVolume = _walkAudioSource.volume;
+
+
             _downRaycastSources = new GameObject[]
             {
                 _raySourceDownLeft, _raySourceDownCenter, _raySourceDownRight
@@ -269,6 +287,8 @@ namespace zs.Logic
                 Debug.Log("Jump!");
                 _jumpStarted = true;
                 _jumping = true;
+
+                Sound.Instance.PlayJump(_audioSource);
             }
             else if (
                 _jumping &&
@@ -286,6 +306,9 @@ namespace zs.Logic
 	
         void FixedUpdate()
         {
+            float initialXVelocity = _currentVelocity.x;
+
+
             float minY = GetNextCollisionPos(_downRaycastSources, Direction.Down, out string downCollisionTag);
             float maxY = GetNextCollisionPos(_upRaycastSources, Direction.Up, out string upCollisionTag);
 
@@ -349,6 +372,11 @@ namespace zs.Logic
 
                 _currentVelocity.y = 0;
 
+                if (!_grounded)
+                {
+                    Sound.Instance.PlayBump(_audioSource);
+                }
+
                 //Debug.Log("Grounded");
                 _grounded = true;
                 _jumpStarted = false;
@@ -370,12 +398,22 @@ namespace zs.Logic
 
             if (newPosition.x > maxX)
             {
+                if (initialXVelocity >= 1f || initialXVelocity <= -1f)
+                {
+                    Sound.Instance.PlayBump(_audioSource);
+                }
+
                 newPosition.x = maxX;
                 _currentVelocity.x = 0;
             }
 
             if (newPosition.x < minX)
             {
+                if (initialXVelocity >= 1f || initialXVelocity <= -1f)
+                {
+                    Sound.Instance.PlayBump(_audioSource);
+                }
+
                 newPosition.x = minX;
                 _currentVelocity.x = 0;
             }
@@ -385,6 +423,16 @@ namespace zs.Logic
             if (_isCarrying)
             {
                 _carriedPlayer.transform.position = transform.position.with_y(transform.position.y + 1f);
+            }
+
+            if (_grounded && (_currentVelocity.x > 0.1 || _currentVelocity.x < -0.1f))
+            {
+                float factor = Mathf.Min(_currentVelocity.magnitude / _horSpeed, 1f);
+                Sound.Instance.PlayWalk(_walkAudioSource, factor * _maxWalkVolume);
+            }
+            else
+            {
+                Sound.Instance.PlayWalk(_walkAudioSource, 0);
             }
         }
 

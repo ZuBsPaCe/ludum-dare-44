@@ -69,6 +69,8 @@
     <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Helpers\LifeCycle.cs" />
     <Compile Include="Assets\Scripts\Helpers\Portal.cs" />
+    <Compile Include="Assets\Scripts\Helpers\Sound.cs" />
+    <Compile Include="Assets\Scripts\Helpers\SoundList.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpawnPoint.cs" />
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
     <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
