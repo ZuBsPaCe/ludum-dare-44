@@ -19,3 +19,4 @@ MonoBehaviour:
   Button: {fileID: 8300000, guid: 84d778b1eaac6c745ba75d3fc302c8e6, type: 3}
   TileDestroy: {fileID: 8300000, guid: c83a89e316183b743ac0b1290529ce1d, type: 3}
   FallIntoVoid: {fileID: 8300000, guid: 0df41293f0bc9414c8d19d8b04068916, type: 3}
+  JumpPad: {fileID: 8300000, guid: 2f1ae63bc4a9d1148a641818c0f9cb58, type: 3}

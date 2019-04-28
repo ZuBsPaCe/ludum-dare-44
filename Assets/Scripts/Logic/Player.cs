@@ -211,6 +211,8 @@ namespace zs.Logic
                 //Debug.Log("Default Velocity");
                 _currentVelocity.y = defaultSpeed;
             }
+
+            Sound.Instance.PlayJumpPad(_audioSource);
         }
 
         #endregion Public Methods
