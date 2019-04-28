@@ -44,6 +44,42 @@ namespace zs.Main
         private Button _act3_level4 = null;
 
         [SerializeField]
+        private Status _statusLevel1 = null;
+
+        [SerializeField]
+        private Status _statusLevel2 = null;
+
+        [SerializeField]
+        private Status _statusLevel3 = null;
+
+        [SerializeField]
+        private Status _statusLevel4 = null;
+
+        [SerializeField]
+        private Status _statusLevel5 = null;
+
+        [SerializeField]
+        private Status _statusLevel6 = null;
+
+        [SerializeField]
+        private Status _statusLevel7 = null;
+
+        [SerializeField]
+        private Status _statusLevel8 = null;
+
+        [SerializeField]
+        private Status _statusLevel9 = null;
+
+        [SerializeField]
+        private Status _statusLevel10 = null;
+
+        [SerializeField]
+        private Status _statusLevel11 = null;
+
+        [SerializeField]
+        private Status _statusLevel12 = null;
+
+        [SerializeField]
         private RectTransform _act2 = null;
 
         [SerializeField]
@@ -80,6 +116,7 @@ namespace zs.Main
         private float _blue = 0;
 
         private List<Button> _levelButtons = null;
+        private List<Status> _levelStatuses = null;
 
         private int _startLevelAfterIntro = 0;
 
@@ -192,6 +229,19 @@ namespace zs.Main
             Debug.Assert(_act3_level3);
             Debug.Assert(_act3_level4);
 
+            Debug.Assert(_statusLevel1);
+            Debug.Assert(_statusLevel2);
+            Debug.Assert(_statusLevel3);
+            Debug.Assert(_statusLevel4);
+            Debug.Assert(_statusLevel5);
+            Debug.Assert(_statusLevel6);
+            Debug.Assert(_statusLevel7);
+            Debug.Assert(_statusLevel8);
+            Debug.Assert(_statusLevel9);
+            Debug.Assert(_statusLevel10);
+            Debug.Assert(_statusLevel11);
+            Debug.Assert(_statusLevel12);
+
             Debug.Assert(_act2);
             Debug.Assert(_act2Unlock);
             Debug.Assert(_act3);
@@ -223,6 +273,23 @@ namespace zs.Main
                 _act3_level2,
                 _act3_level3,
                 _act3_level4
+            };
+
+            _levelStatuses = new List<Status>
+            {
+                null,
+                _statusLevel1,
+                _statusLevel2,
+                _statusLevel3,
+                _statusLevel4,
+                _statusLevel5,
+                _statusLevel6,
+                _statusLevel7,
+                _statusLevel8,
+                _statusLevel9,
+                _statusLevel10,
+                _statusLevel11,
+                _statusLevel12,
             };
         }
 
@@ -265,6 +332,36 @@ namespace zs.Main
                 else
                 {
                     levelButton.interactable = false;
+                }
+            }
+
+            foreach (Status status in _levelStatuses)
+            {
+                if (status == null)
+                {
+                    continue;
+                }
+
+                string levelString = status.name.Split(' ')[1];
+                int level = int.Parse(levelString);
+
+                if (PlayerPrefs.HasKey("Level " + level))
+                {
+                    int deaths = PlayerPrefs.GetInt("Level " + level);
+                    if (deaths == 0)
+                    {
+                        status.ShowCrown();
+                    }
+                    else
+                    {
+                        status.ShowHeart(deaths);
+                    }
+
+                    status.gameObject.SetActive(true);
+                }
+                else
+                {
+                    status.gameObject.SetActive(false);
                 }
             }
 

@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Helpers\SoundList.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpawnPoint.cs" />
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
+    <Compile Include="Assets\Scripts\Helpers\Status.cs" />
     <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
     <Compile Include="Assets\Scripts\Levels\Level0.cs" />
     <Compile Include="Assets\Scripts\Levels\Level3.cs" />

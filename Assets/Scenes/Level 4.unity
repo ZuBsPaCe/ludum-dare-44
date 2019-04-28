@@ -3726,11 +3726,21 @@ PrefabInstance:
     - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
         type: 3}
       propertyPath: _mainText
-      value: Act 2 unlocked
+      value: Act 2 unlocked.
       objectReference: {fileID: 0}
     - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
         type: 3}
       propertyPath: _returnToLevelScreen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
+        type: 3}
+      propertyPath: _subText
+      value: 10 lifes gained.
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
+        type: 3}
+      propertyPath: _showHeart
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
