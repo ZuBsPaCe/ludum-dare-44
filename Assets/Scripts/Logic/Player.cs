@@ -26,7 +26,10 @@ namespace zs.Logic
         private float _spriteLerp = 20f;
 
         [SerializeField]
-        private SpriteRenderer _aliveSprite = null;
+        private SpriteRenderer _aliveBodySprite = null;
+
+        [SerializeField]
+        private SpriteRenderer _aliveEyesSprite = null;
 
         [SerializeField]
         private SpriteRenderer _deadSprite = null;
@@ -153,7 +156,8 @@ namespace zs.Logic
 
             _spritesTransform.position = transform.position;
 
-            _aliveSprite.enabled = false;
+            _aliveBodySprite.enabled = false;
+            _aliveEyesSprite.enabled = false;
             _deadSprite.enabled = true;
 
             gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
@@ -223,7 +227,9 @@ namespace zs.Logic
         {
             Debug.Assert(_spritesTransform);
 
-            Debug.Assert(_aliveSprite, _deadSprite);
+            Debug.Assert(_aliveBodySprite);
+            Debug.Assert(_aliveEyesSprite);
+            Debug.Assert(_deadSprite);
 
             Debug.Assert(
                 _raySourceDownLeft && _raySourceDownCenter && _raySourceDownRight &&
@@ -309,6 +315,18 @@ namespace zs.Logic
 
             _spritePos = Vector3.Lerp(_spritePos, transform.position, _spriteLerp * Time.deltaTime);
             _spritesTransform.position = _spritePos;
+
+            float shiftEyes = _currentVelocity.x / 10;
+            if (shiftEyes > 1)
+            {
+                shiftEyes = 1;
+            }
+            else if (shiftEyes < -1)
+            {
+                shiftEyes = -1;
+            }
+
+            _aliveEyesSprite.transform.localPosition = _aliveEyesSprite.transform.localPosition.with_x(shiftEyes * 0.07f);
         }
 	
         void FixedUpdate()
