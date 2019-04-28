@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using zs.Helpers;
 
 namespace zs.Logic
 {
@@ -99,6 +100,8 @@ namespace zs.Logic
         private bool _isCarrying;
         private Player _carriedPlayer = null;
 
+        private bool _levelDone = false;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -112,8 +115,19 @@ namespace zs.Logic
 
         #region Public Methods
 
+        public void LevelDone()
+        {
+            _levelDone = true;
+            _currentVelocity = _currentVelocity.with_x(0);
+        }
+
         public void Kill(bool stuck = false)
         {
+            if (_levelDone)
+            {
+                return;
+            }
+
             Debug.Assert(!_killed);
 
             Debug.Log("Killed!");
@@ -210,7 +224,11 @@ namespace zs.Logic
         {
             float hor = Input.GetAxisRaw("Horizontal");
 
-            if (hor < 0.1f && hor > -0.1f)
+            if (_levelDone)
+            {
+                _horTargetVelocity = Vector3.zero;
+            }
+            else if (hor < 0.1f && hor > -0.1f)
             {
                 _horTargetVelocity = Vector3.zero;
             }
@@ -225,7 +243,8 @@ namespace zs.Logic
 
             if (_grounded &&
                 !_jumping &&
-                Input.GetButtonDown("Jump"))
+                Input.GetButtonDown("Jump") &&
+                !_levelDone)
             {
                 Debug.Log("Jump!");
                 _jumpStarted = true;
@@ -233,7 +252,8 @@ namespace zs.Logic
             }
             else if (
                 _jumping &&
-                Input.GetButtonUp("Jump"))
+                Input.GetButtonUp("Jump") &&
+                !_levelDone)
             {
                 _jumpStarted = false;
                 _jumping = false;
@@ -359,7 +379,8 @@ namespace zs.Logic
             }
             else if (collider.tag == "Portal")
             {
-                Game.Instance.LoadNextLevel();
+                Portal portal = collider.GetComponent<Portal>();
+                portal.EnterPortal();
             }
         }
 

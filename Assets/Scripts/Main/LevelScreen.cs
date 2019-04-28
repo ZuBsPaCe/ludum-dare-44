@@ -53,6 +53,12 @@ namespace zs.Main
         void Update()
         {
             Game.Instance.PerformLifeCycle(ref _cycle, ref _red, ref _green, ref _blue, ref _life);
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                MainMenu.ForceStartScreen = true;
+                _mainMenu.ShowStartScreen();
+            }
         }
 
         #endregion MonoBehaviour

@@ -83,6 +83,23 @@ namespace zs.Helpers
 
         void Update()
         {
+            if (!Fading)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _topPanel.gameObject.SetActive(true);
+                _topPanel.color = new Color(0, 0, 0, 1);
+
+                Fading = false;
+                _action.Invoke();
+
+                return;
+            }
+
             const float speedFadeIn = 1f;
             const float speedFadeInText = 0.33f;
             const float textShownTime = 3f;

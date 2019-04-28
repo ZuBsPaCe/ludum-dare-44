@@ -67,9 +67,11 @@
     <Compile Include="Assets\Scripts\Helpers\FadeScreen.cs" />
     <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Helpers\LifeCycle.cs" />
+    <Compile Include="Assets\Scripts\Helpers\Portal.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpawnPoint.cs" />
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
     <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
+    <Compile Include="Assets\Scripts\Levels\Level0.cs" />
     <Compile Include="Assets\Scripts\Logic\Bullet.cs" />
     <Compile Include="Assets\Scripts\Logic\Canon.cs" />
     <Compile Include="Assets\Scripts\Logic\Game.cs" />

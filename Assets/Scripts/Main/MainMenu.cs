@@ -20,6 +20,9 @@ public class MainMenu : MonoBehaviour
 	#endregion Private Vars
 
 	#region Public Vars
+
+    public static bool ForceStartScreen = true;
+
 	#endregion Public Vars
 
 	#region Public Methods
@@ -46,10 +49,21 @@ public class MainMenu : MonoBehaviour
         Debug.Assert(_levelScreen);
         Debug.Assert(_fadeScreen);
 
-        _startScreen.SetActive(true);
-        _levelScreen.SetActive(false);
+        if (ForceStartScreen || !PlayerPrefs.HasKey("Level 0"))
+        {
+            _startScreen.SetActive(true);
+            _levelScreen.SetActive(false);
+        }
+        else
+        {
+            _startScreen.SetActive(false);
+            _levelScreen.SetActive(true);
+        }
+
         _fadeScreen.gameObject.SetActive(false);
-	}
+
+        ForceStartScreen = false;
+    }
 
 	void Start()
 	{
@@ -57,6 +71,17 @@ public class MainMenu : MonoBehaviour
 	
 	void Update()
 	{
+        if (_fadeScreen.Fading)
+        {
+            return;
+        }
+
+        #if UNITY_STANDALONE
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit(0);
+        }
+        #endif
 	}
 
 	#endregion MonoBehaviour

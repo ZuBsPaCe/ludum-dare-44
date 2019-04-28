@@ -48,13 +48,13 @@ namespace zs.Main
                 return;
             }
 
-            if (PlayerPrefs.HasKey("CanContinue"))
+            if (PlayerPrefs.HasKey("Level 0"))
             {
                 _mainMenu.ShowLevelScreen();
             }
             else
             {
-                _fadeScreen.PerformFade("Intro", "A walk in the woods", StartIntroLevel);
+                StartIntroLevel();
             }
         }
 
@@ -68,7 +68,7 @@ namespace zs.Main
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
 
-            _mainMenu.ShowLevelScreen();
+            StartIntroLevel();
         }
 
         #endregion Public Methods
@@ -86,7 +86,7 @@ namespace zs.Main
 
         void Start()
         {
-            if (PlayerPrefs.HasKey("CanContinue"))
+            if (PlayerPrefs.HasKey("Level 0"))
             {
                 _startNewButton.gameObject.SetActive(true);
 
@@ -109,6 +109,11 @@ namespace zs.Main
         #region Private Methods
 
         private void StartIntroLevel()
+        {
+            _fadeScreen.PerformFade("Intro", "A walk in the woods", AfterStartIntroLevel);
+        }
+
+        private void AfterStartIntroLevel()
         {
             Game.Instance.LoadLevel(0);
         }

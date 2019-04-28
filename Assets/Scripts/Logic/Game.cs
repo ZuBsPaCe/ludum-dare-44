@@ -24,6 +24,8 @@ namespace zs.Logic
 
         private Transform _bulletContainer;
 
+        private int _lifesLost = 0;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -41,6 +43,11 @@ namespace zs.Logic
                 return _instance;
             }
             set { _instance = value; }
+        }
+
+        public int LifesLost
+        {
+            get { return _lifesLost; }
         }
 
         public Player CurrentPlayer
@@ -74,6 +81,8 @@ namespace zs.Logic
                 return;
             }
             #endif
+
+            _lifesLost += 1;
 
             _currentPlayer.Kill(stuck);
 
@@ -188,6 +197,8 @@ namespace zs.Logic
         {
             if (scene.name.StartsWith("Level"))
             {
+                _lifesLost = 0;
+
                 _currentSpawnPoint = FindObjectOfType<SpawnPoint>();
                 Debug.Assert(_currentSpawnPoint);
 
