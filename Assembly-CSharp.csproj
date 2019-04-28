@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Helpers\Conveyor.cs" />
     <Compile Include="Assets\Scripts\Helpers\Direction.cs" />
     <Compile Include="Assets\Scripts\Helpers\FadeScreen.cs" />
+    <Compile Include="Assets\Scripts\Helpers\JumpPad.cs" />
     <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Helpers\LifeCycle.cs" />
     <Compile Include="Assets\Scripts\Helpers\Portal.cs" />

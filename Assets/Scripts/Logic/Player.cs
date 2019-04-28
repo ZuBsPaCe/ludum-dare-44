@@ -175,6 +175,22 @@ namespace zs.Logic
             return GetNextCollisionPos(_leftRaycastSources, Direction.Left, out _);
         }
 
+        public void JumpPad()
+        {
+            const float defaultSpeed = 30f;
+
+            if (_currentVelocity.y < -defaultSpeed)
+            {
+                Debug.Log("Reversing Velocity");
+                _currentVelocity.y = -_currentVelocity.y;
+            }
+            else
+            {
+                Debug.Log("Default Velocity");
+                _currentVelocity.y = defaultSpeed;
+            }
+        }
+
         #endregion Public Methods
 
         #region MonoBehaviour

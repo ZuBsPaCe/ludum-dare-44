@@ -4,7 +4,7 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: Basic
     21300002: Spike Bottom
-    21300004: Tilemap_2
+    21300004: Spike Top
     21300006: Tilemap_3
     21300008: Tilemap_4
     21300010: Tilemap_5
@@ -236,7 +236,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tilemap_2
+      name: Spike Top
       rect:
         serializedVersion: 2
         x: 256
