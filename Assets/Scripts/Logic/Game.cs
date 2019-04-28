@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using zs.Helpers;
 using zs.Main;
 
@@ -89,6 +90,70 @@ namespace zs.Logic
         public void LoadNextLevel()
         {
             LoadLevel(_currentLevel + 1);
+        }
+
+        public void PerformLifeCycle(ref LifeCycle cycle, ref float red, ref float green, ref float blue, ref Image life)
+        {
+            const float speed = 30;
+
+            switch (cycle)
+            {
+                case LifeCycle.RedUp:
+                    red += speed * Time.deltaTime;
+                    if (red >= 255)
+                    {
+                        red = 255;
+                        cycle = LifeCycle.GreenDown;
+                    }
+                    break;
+
+                case LifeCycle.GreenDown:
+                    green -= speed * Time.deltaTime;
+                    if (green <= 0)
+                    {
+                        green = 0;
+                        cycle = LifeCycle.BlueUp;
+                    }
+                    break;
+
+                case LifeCycle.BlueUp:
+                    blue += speed * Time.deltaTime;
+                    if (blue >= 255)
+                    {
+                        blue = 255;
+                        cycle = LifeCycle.RedDown;
+                    }
+                    break;
+
+                case LifeCycle.RedDown:
+                    red -= speed * Time.deltaTime;
+                    if (red <= 0)
+                    {
+                        red = 0;
+                        cycle = LifeCycle.GreenUp;
+                    }
+                    break;
+
+                case LifeCycle.GreenUp:
+                    green += speed * Time.deltaTime;
+                    if (green >= 255)
+                    {
+                        green= 255;
+                        cycle = LifeCycle.BlueDown;
+                    }
+                    break;
+
+                case LifeCycle.BlueDown:
+                    blue -= speed * Time.deltaTime;
+                    if (blue <= 0)
+                    {
+                        blue = 0;
+                        cycle = LifeCycle.RedUp;
+                    }
+                    break;
+            }
+
+            life.color = new Color(red / 255f, green / 255f, blue / 255f, 100 / 255f);
         }
 
         #endregion Public Methods

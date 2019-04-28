@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Helpers\Conveyor.cs" />
     <Compile Include="Assets\Scripts\Helpers\Direction.cs" />
     <Compile Include="Assets\Scripts\Helpers\LevelInfo.cs" />
+    <Compile Include="Assets\Scripts\Helpers\LifeCycle.cs" />
     <Compile Include="Assets\Scripts\Helpers\SpawnPoint.cs" />
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
     <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
@@ -73,7 +74,9 @@
     <Compile Include="Assets\Scripts\Logic\Game.cs" />
     <Compile Include="Assets\Scripts\Logic\Player.cs" />
     <Compile Include="Assets\Scripts\Main\GameInfo.cs" />
+    <Compile Include="Assets\Scripts\Main\LevelScreen.cs" />
     <Compile Include="Assets\Scripts\Main\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\Main\StartScreen.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
     <Reference Include="Unity.RenderPipelines.Core.Editor">
       <HintPath>D:/code/personal/github/ludum-dare-44/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
