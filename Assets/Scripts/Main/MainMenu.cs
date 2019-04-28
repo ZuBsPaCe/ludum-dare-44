@@ -31,12 +31,16 @@ public class MainMenu : MonoBehaviour
     {
         _startScreen.SetActive(true);
         _levelScreen.SetActive(false);
+
+        ForceStartScreen = false;
     }
 
     public void ShowLevelScreen()
     {
         _startScreen.SetActive(false);
         _levelScreen.SetActive(true);
+
+        ForceStartScreen = false;
     }
 
 	#endregion Public Methods
