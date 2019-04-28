@@ -71,6 +71,18 @@ namespace zs.Helpers
             if (_heartSprite)
             {
                 _heartSprite.enabled = false;
+
+                if (PlayerPrefs.HasKey("EarnedHearts"))
+                {
+                    int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
+                    PlayerPrefs.SetInt("EarnedHearts", earnedHearts + 10);
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("EarnedHearts", 10);
+                }
+
+                PlayerPrefs.Save();
             }
 
             if (PrePortalEvent == null)

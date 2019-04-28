@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -67,6 +68,40 @@ namespace zs.Logic
 
                 return _bulletContainer;
             } 
+        }
+
+        public int EarnedHearts
+        {
+            get
+            {
+                if (!PlayerPrefs.HasKey("EarnedHearts"))
+                {
+                    return 0;
+                }
+
+                return PlayerPrefs.GetInt("EarnedHearts");
+            }
+        }
+
+        public int TotalHearts
+        {
+            get
+            {
+                int total = EarnedHearts;
+
+                for (int i = 0; i <= 16; i++)
+                {
+                    if (!PlayerPrefs.HasKey("Level " + i))
+                    {
+                        continue;
+                    }
+
+                    int lifesLost = PlayerPrefs.GetInt("Level " + i);
+                    total -= lifesLost;
+                }
+
+                return total;
+            }
         }
 
         #endregion Public Vars
