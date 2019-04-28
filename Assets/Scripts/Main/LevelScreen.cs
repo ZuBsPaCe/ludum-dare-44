@@ -44,15 +44,6 @@ namespace zs.Main
         private Button _act3_level4 = null;
 
         [SerializeField]
-        private Button _act4_level1 = null;
-        [SerializeField]
-        private Button _act4_level2 = null;
-        [SerializeField]
-        private Button _act4_level3 = null;
-        [SerializeField]
-        private Button _act4_level4 = null;
-
-        [SerializeField]
         private RectTransform _act2 = null;
 
         [SerializeField]
@@ -65,19 +56,10 @@ namespace zs.Main
         private RectTransform _act3Unlock = null;
 
         [SerializeField]
-        private RectTransform _act4 = null;
-
-        [SerializeField]
-        private RectTransform _act4Unlock = null;
-
-        [SerializeField]
         private Button _act2UnlockButton = null;
 
         [SerializeField]
         private Button _act3UnlockButton = null;
-
-        [SerializeField]
-        private Button _act4UnlockButton = null;
 
         [SerializeField]
         private Text _totalHeartsText = null;
@@ -127,17 +109,6 @@ namespace zs.Main
             UpdatePlayerProgress();
         }
 
-        public void UnlockAct4()
-        {
-            int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
-            PlayerPrefs.SetInt("EarnedHearts", earnedHearts - 10);
-
-            PlayerPrefs.SetInt("Act4 Unlocked", 1);
-            PlayerPrefs.Save();
-
-            UpdatePlayerProgress();
-        }
-
         #endregion Public Methods
 
         #region MonoBehaviour
@@ -162,21 +133,13 @@ namespace zs.Main
             Debug.Assert(_act3_level3);
             Debug.Assert(_act3_level4);
 
-            Debug.Assert(_act4_level1);
-            Debug.Assert(_act4_level2);
-            Debug.Assert(_act4_level3);
-            Debug.Assert(_act4_level4);
-
             Debug.Assert(_act2);
             Debug.Assert(_act2Unlock);
             Debug.Assert(_act3);
             Debug.Assert(_act3Unlock);
-            Debug.Assert(_act4);
-            Debug.Assert(_act4Unlock);
 
             Debug.Assert(_act2UnlockButton);
             Debug.Assert(_act3UnlockButton);
-            Debug.Assert(_act4UnlockButton);
 
             Debug.Assert(_totalHeartsText);
 
@@ -196,12 +159,7 @@ namespace zs.Main
                 _act3_level1,
                 _act3_level2,
                 _act3_level3,
-                _act3_level4,
-
-                _act4_level1,
-                _act4_level2,
-                _act4_level3,
-                _act4_level4
+                _act3_level4
             };
         }
 
@@ -253,17 +211,12 @@ namespace zs.Main
             _act3.gameObject.SetActive(PlayerPrefs.HasKey("Act3 Unlocked"));
             _act3Unlock.gameObject.SetActive(!PlayerPrefs.HasKey("Act3 Unlocked"));
 
-            _act4.gameObject.SetActive(PlayerPrefs.HasKey("Act4 Unlocked"));
-            _act4Unlock.gameObject.SetActive(!PlayerPrefs.HasKey("Act4 Unlocked"));
-
             int totalHearts = Game.Instance.TotalHearts;
             _totalHeartsText.text = totalHearts.ToString();
 
             _act2UnlockButton.interactable = PlayerPrefs.HasKey("Level 4") && totalHearts >= 10;
 
             _act3UnlockButton.interactable = PlayerPrefs.HasKey("Level 8") && totalHearts >= 10;
-
-            _act4UnlockButton.interactable = PlayerPrefs.HasKey("Level 12") && totalHearts >= 10;
         }
 
         #endregion Private Methods
