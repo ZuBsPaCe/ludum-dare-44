@@ -501,6 +501,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FadeScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 1638796199659136570, guid: 4bad2c5d11384d4498742d8712c91acb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1638796199659136571, guid: 4bad2c5d11384d4498742d8712c91acb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3700,6 +3705,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _mainText
       value: Act 2 unlocked
+      objectReference: {fileID: 0}
+    - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
+        type: 3}
+      propertyPath: _returnToLevelScreen
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9789362b54baf9a47be4396c0a3910e3, type: 3}

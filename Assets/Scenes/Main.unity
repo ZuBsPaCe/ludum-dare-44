@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4042,20 +4042,14 @@ MonoBehaviour:
   _act3_level2: {fileID: 411665795}
   _act3_level3: {fileID: 1046033385}
   _act3_level4: {fileID: 1747995798}
-  _act4_level1: {fileID: 0}
-  _act4_level2: {fileID: 0}
-  _act4_level3: {fileID: 0}
-  _act4_level4: {fileID: 0}
   _act2: {fileID: 1223630146}
   _act2Unlock: {fileID: 1513416899}
   _act3: {fileID: 1584788395}
   _act3Unlock: {fileID: 1756764768}
-  _act4: {fileID: 0}
-  _act4Unlock: {fileID: 0}
   _act2UnlockButton: {fileID: 1112320318}
   _act3UnlockButton: {fileID: 1803238761}
-  _act4UnlockButton: {fileID: 0}
   _totalHeartsText: {fileID: 699999464}
+  _fadeScreen: {fileID: 602963512}
 --- !u!1 &1753905763
 GameObject:
   m_ObjectHideFlags: 0
@@ -5309,11 +5303,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FadeScreen
-      objectReference: {fileID: 0}
-    - target: {fileID: 1638796199659136570, guid: 4bad2c5d11384d4498742d8712c91acb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1638796199659136571, guid: 4bad2c5d11384d4498742d8712c91acb,
         type: 3}

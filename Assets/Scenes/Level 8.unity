@@ -1190,7 +1190,7 @@ PrefabInstance:
     - target: {fileID: 4438252431731598487, guid: 9789362b54baf9a47be4396c0a3910e3,
         type: 3}
       propertyPath: _mainText
-      value: Unlocked Act 3
+      value: Act 3 unlocked
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9789362b54baf9a47be4396c0a3910e3, type: 3}

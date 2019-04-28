@@ -71,18 +71,6 @@ namespace zs.Helpers
             if (_showHeart)
             {
                 _heartSprite.enabled = false;
-
-                if (PlayerPrefs.HasKey("EarnedHearts"))
-                {
-                    int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
-                    PlayerPrefs.SetInt("EarnedHearts", earnedHearts + 10);
-                }
-                else
-                {
-                    PlayerPrefs.SetInt("EarnedHearts", 10);
-                }
-
-                PlayerPrefs.Save();
             }
 
             if (PrePortalEvent.GetPersistentEventCount() == 0)
@@ -97,7 +85,9 @@ namespace zs.Helpers
 
         public void PerformPortal()
         {
-            if (_fadeScreen != null)
+            string level = SceneManager.GetActiveScene().name;
+
+            if (_fadeScreen != null && !PlayerPrefs.HasKey(level))
             {
                 _fadeScreen.PerformFade(_mainText, _subText, ReallyPerformPortal);
             }
@@ -123,6 +113,19 @@ namespace zs.Helpers
             else
             {
                 PlayerPrefs.SetInt(level, Game.Instance.LifesLost);
+
+                if (_showHeart)
+                {
+                    if (PlayerPrefs.HasKey("EarnedHearts"))
+                    {
+                        int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
+                        PlayerPrefs.SetInt("EarnedHearts", earnedHearts + 10);
+                    }
+                    else
+                    {
+                        PlayerPrefs.SetInt("EarnedHearts", 10);
+                    }
+                }
             }
 
             PlayerPrefs.Save();

@@ -64,6 +64,9 @@ namespace zs.Main
         [SerializeField]
         private Text _totalHeartsText = null;
 
+        [SerializeField]
+        private FadeScreen _fadeScreen = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -75,6 +78,8 @@ namespace zs.Main
 
         private List<Button> _levelButtons = null;
 
+        private int _startLevelAfterIntro = 0;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -84,7 +89,52 @@ namespace zs.Main
 
         public void StartLevel(int level)
         {
-            Game.Instance.LoadLevel(level);
+            if (level == 1 && !PlayerPrefs.HasKey("Act1 Intro Shown"))
+            {
+                PlayerPrefs.SetInt("Act 1 Intro Shown", 1);
+                PlayerPrefs.Save();
+
+                _startLevelAfterIntro = level;
+
+                _fadeScreen.PerformFade(
+                    "Act 1",
+                    "A life's waste",
+                    StartLevelAfterIntro);
+
+            }
+            else if (level == 5 && !PlayerPrefs.HasKey("Act2 Intro Shown"))
+            {
+                PlayerPrefs.SetInt("Act 2 Intro Shown", 1);
+                PlayerPrefs.Save();
+
+                _startLevelAfterIntro = level;
+
+                _fadeScreen.PerformFade(
+                    "Act 2",
+                    "Torn apart",
+                    StartLevelAfterIntro);
+            }
+            else if (level == 9 && !PlayerPrefs.HasKey("Act3 Intro Shown"))
+            {
+                PlayerPrefs.SetInt("Act 3 Intro Shown", 1);
+                PlayerPrefs.Save();
+
+                _startLevelAfterIntro = level;
+
+                _fadeScreen.PerformFade(
+                    "Act 3",
+                    "Enlightenment",
+                    StartLevelAfterIntro);
+            }
+            else
+            {
+                Game.Instance.LoadLevel(level);
+            }
+        }
+
+        private void StartLevelAfterIntro()
+        {
+            Game.Instance.LoadLevel(_startLevelAfterIntro);
         }
 
         public void UnlockAct2()
@@ -142,6 +192,8 @@ namespace zs.Main
             Debug.Assert(_act3UnlockButton);
 
             Debug.Assert(_totalHeartsText);
+
+            Debug.Assert(_fadeScreen);
 
             _levelButtons = new List<Button>
             {
