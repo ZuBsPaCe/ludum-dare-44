@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Levels\Level0.cs" />
     <Compile Include="Assets\Scripts\Levels\Level3.cs" />
     <Compile Include="Assets\Scripts\Levels\Level6.cs" />
+    <Compile Include="Assets\Scripts\Levels\Level7.cs" />
     <Compile Include="Assets\Scripts\Logic\Bullet.cs" />
     <Compile Include="Assets\Scripts\Logic\Canon.cs" />
     <Compile Include="Assets\Scripts\Logic\Game.cs" />
