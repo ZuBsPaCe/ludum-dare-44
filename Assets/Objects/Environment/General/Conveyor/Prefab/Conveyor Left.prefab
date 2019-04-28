@@ -82,6 +82,7 @@ MonoBehaviour:
   _CW: 1
   _CCW: 0
   _showGear: 1
+  _hackyHackHack: {fileID: 8431274870355122387}
 --- !u!61 &5181942802585922694
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -141,7 +142,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.66}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -152,7 +153,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 0.25}
+  m_Size: {x: 1.1, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &5717499680477425157
 GameObject:

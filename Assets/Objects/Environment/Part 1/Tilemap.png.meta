@@ -5,7 +5,7 @@ TextureImporter:
     21300000: Basic
     21300002: Spike Bottom
     21300004: Spike Top
-    21300006: Tilemap_3
+    21300006: Spike Right
     21300008: Tilemap_4
     21300010: Tilemap_5
     21300012: Tilemap_6
@@ -256,7 +256,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tilemap_3
+      name: Spike Right
       rect:
         serializedVersion: 2
         x: 384

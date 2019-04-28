@@ -15,12 +15,18 @@ namespace zs.Helpers
         [SerializeField]
         private bool _showGear = true;
 
+        [SerializeField]
+        private Collider2D _hackyHackHack = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
 
         private SpriteRenderer _gearSpriteRenderer = null;
         private AreaEffector2D _areaEffector2D = null;
+
+        private bool _hackTriggerOn = true;
+        private float _hackTriggerOnTime = 0;
 
         #endregion Private Vars
 
@@ -72,6 +78,8 @@ namespace zs.Helpers
 	
         void Awake()
         {
+            Debug.Assert(_hackyHackHack);
+
             foreach (SpriteRenderer child in GetComponentsInChildren<SpriteRenderer>())
             {
                 if (child.name == "Gear")
@@ -112,6 +120,17 @@ namespace zs.Helpers
             {
                 _gearSpriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 180 * Time.deltaTime) * _gearSpriteRenderer.transform.rotation;
             }
+        }
+
+        void FixedUpdate()
+        {
+            if (_hackyHackHack && Time.time - _hackTriggerOnTime > 1f)
+            {
+                _hackTriggerOnTime = Time.time;
+                _hackyHackHack.isTrigger = !_hackTriggerOn;
+                _hackTriggerOn = !_hackTriggerOn;
+            }
+
         }
 
         #endregion MonoBehaviour
