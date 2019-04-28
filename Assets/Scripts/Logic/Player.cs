@@ -177,7 +177,7 @@ namespace zs.Logic
 
         public void JumpPad()
         {
-            const float defaultSpeed = 30f;
+            const float defaultSpeed = 20f;
 
             if (_currentVelocity.y < -defaultSpeed)
             {

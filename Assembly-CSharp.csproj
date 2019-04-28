@@ -60,7 +60,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Levels\Level3.cs" />
     <Compile Include="Assets\Scripts\Extensions.cs" />
     <Compile Include="Assets\Scripts\Helpers\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Helpers\Conveyor.cs" />
@@ -74,6 +73,8 @@
     <Compile Include="Assets\Scripts\Helpers\Spikes.cs" />
     <Compile Include="Assets\Scripts\Helpers\ToggleButton.cs" />
     <Compile Include="Assets\Scripts\Levels\Level0.cs" />
+    <Compile Include="Assets\Scripts\Levels\Level3.cs" />
+    <Compile Include="Assets\Scripts\Levels\Level6.cs" />
     <Compile Include="Assets\Scripts\Logic\Bullet.cs" />
     <Compile Include="Assets\Scripts\Logic\Canon.cs" />
     <Compile Include="Assets\Scripts\Logic\Game.cs" />

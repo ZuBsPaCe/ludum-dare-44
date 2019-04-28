@@ -22,6 +22,9 @@ namespace zs.Helpers
         [SerializeField]
         private float _speed = 3;
 
+        [SerializeField]
+        private bool _travelling = true;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -87,6 +90,11 @@ namespace zs.Helpers
             }
         }
 
+        public void ToggleTravel()
+        {
+            _travelling = !_travelling;
+        }
+
         public void Reverse()
         {
             if (!_CW && !_CCW)
@@ -137,7 +145,7 @@ namespace zs.Helpers
 
         void FixedUpdate()
         {
-            if (_start != null && _end != null && _speed != 0)
+            if (_start != null && _end != null && _speed != 0 && _travelling)
             {
                 if (_toEnd)
                 {
