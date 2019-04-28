@@ -29,6 +29,9 @@ namespace zs.Helpers
         [SerializeField]
         private SpriteRenderer _buttonSprite = null;
 
+        [SerializeField]
+        private AudioSource _audioSource = null;
+
         public ToggleButtonEvent Toggled;
         public TurnOnButtonEvent TurnedOn;
         public TurnOffButtonEvent TurnedOff;
@@ -58,6 +61,8 @@ namespace zs.Helpers
                 _on = true;
                 TurnedOn.Invoke();
             }
+
+            _audioSource.Play();
             
             Toggled.Invoke();
 
@@ -72,6 +77,7 @@ namespace zs.Helpers
 	
         void Awake()
         {
+            Debug.Assert(_audioSource);
             Debug.Assert(_buttonSprite);
             UpdateColor();
         }

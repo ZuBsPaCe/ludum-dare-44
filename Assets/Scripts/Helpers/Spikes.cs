@@ -25,6 +25,9 @@ namespace zs.Helpers
         [SerializeField]
         private bool _travelling = true;
 
+        [SerializeField]
+        private AudioSource _audioSource = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -115,6 +118,8 @@ namespace zs.Helpers
 	
         void Awake()
         {
+            Debug.Assert(_audioSource);
+
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
             Debug.Assert(_spriteRenderer);
             
@@ -185,10 +190,12 @@ namespace zs.Helpers
             if (!_CCW && !_CW)
             {
                 gameObject.tag = "SpikesIdle";
+                _audioSource.Stop();
             }
             else
             {
                 gameObject.tag = "SpikesRunning";
+                _audioSource.Play();
             }
         }
         

@@ -119,6 +119,11 @@ namespace zs.Logic
             get { return _invincible; }
         }
 
+        public AudioSource AudioSource
+        {
+            get { return _audioSource; }
+        }
+
         #endregion Public Vars
 
         #region Public Methods
@@ -139,6 +144,7 @@ namespace zs.Logic
             }
 
             Sound.Instance.StopWalk(_walkAudioSource);
+            Sound.Instance.PlayDie(_audioSource);
 
             Debug.Assert(!_killed);
 

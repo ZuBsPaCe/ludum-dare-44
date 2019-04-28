@@ -67,6 +67,9 @@ namespace zs.Main
         [SerializeField]
         private FadeScreen _fadeScreen = null;
 
+        [SerializeField]
+        private AudioSource _audioSource = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -89,6 +92,8 @@ namespace zs.Main
 
         public void StartLevel(int level)
         {
+            Sound.Instance.PlayButton(_audioSource);
+
             if (level == 1 && !PlayerPrefs.HasKey("Act1 Intro Shown"))
             {
                 PlayerPrefs.SetInt("Act1 Intro Shown", 1);
@@ -139,6 +144,8 @@ namespace zs.Main
 
         public void UnlockAct2()
         {
+            Sound.Instance.PlayButton(_audioSource);
+
             int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
             PlayerPrefs.SetInt("EarnedHearts", earnedHearts - 10);
 
@@ -150,6 +157,8 @@ namespace zs.Main
 
         public void UnlockAct3()
         {
+            Sound.Instance.PlayButton(_audioSource);
+
             int earnedHearts = PlayerPrefs.GetInt("EarnedHearts");
             PlayerPrefs.SetInt("EarnedHearts", earnedHearts - 10);
 
@@ -194,6 +203,8 @@ namespace zs.Main
             Debug.Assert(_totalHeartsText);
 
             Debug.Assert(_fadeScreen);
+
+            Debug.Assert(_audioSource);
 
             _levelButtons = new List<Button>
             {

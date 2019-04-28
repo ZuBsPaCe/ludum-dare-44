@@ -13,5 +13,9 @@ namespace zs.Assets.Scripts.Helpers
         public AudioClip Jump = null;
         public AudioClip Walk = null;
         public AudioClip Bump = null;
+        public AudioClip Die = null;
+        public AudioClip Button = null;
+        public AudioClip TileDestroy = null;
+        public AudioClip FallIntoVoid = null;
     }
 }

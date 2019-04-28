@@ -25,6 +25,9 @@ namespace zs.Main
         [SerializeField]
         private FadeScreen _fadeScreen = null;
 
+        [SerializeField]
+        private AudioSource _audioSource = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -48,6 +51,8 @@ namespace zs.Main
                 return;
             }
 
+            Sound.Instance.PlayButton(_audioSource);
+
             if (PlayerPrefs.HasKey("Level 0"))
             {
                 _mainMenu.ShowLevelScreen();
@@ -64,6 +69,8 @@ namespace zs.Main
             {
                 return;
             }
+
+            Sound.Instance.PlayButton(_audioSource);
 
             PlayerPrefs.DeleteAll();
             PlayerPrefs.Save();
@@ -82,6 +89,7 @@ namespace zs.Main
             Debug.Assert(_startNewButton);
             Debug.Assert(_startOrContinueButton);
             Debug.Assert(_mainMenu);
+            Debug.Assert(_audioSource);
         }
 
         void Start()

@@ -54,6 +54,26 @@ namespace zs.Helpers
             source.PlayOneShot(_sounds.Bump);
         }
 
+        public void PlayDie(AudioSource source)
+        {
+            source.PlayOneShot(_sounds.Die);
+        }
+
+        public void PlayButton(AudioSource source)
+        {
+            source.PlayOneShot(_sounds.Button);
+        }
+
+        public void PlayTileDestroy(AudioSource source)
+        {
+            source.PlayOneShot(_sounds.TileDestroy);
+        }
+        
+        public void PlayFallIntoVoid(AudioSource source)
+        {
+            source.PlayOneShot(_sounds.FallIntoVoid);
+        }
+
         #endregion Public Methods
 
         #region MonoBehaviour

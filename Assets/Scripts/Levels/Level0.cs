@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 using zs.Helpers;
+using zs.Logic;
 
 namespace zs.Levels
 {
@@ -65,24 +66,37 @@ namespace zs.Levels
             {
                 _tilemap.SetTile(new Vector3Int(52, 8, 0), null);
                 _tilemap.SetTile(new Vector3Int(57, 8, 0), null);
+                Sound.Instance.PlayTileDestroy(Game.Instance.CurrentPlayer.AudioSource);
+
                 _sequence = 1;
             }
             else if (_sequence == 1 && Time.time - _outroStartTime > 3)
             {
                 _tilemap.SetTile(new Vector3Int(53, 8, 0), null);
                 _tilemap.SetTile(new Vector3Int(56, 8, 0), null);
+                Sound.Instance.PlayTileDestroy(Game.Instance.CurrentPlayer.AudioSource);
+
+                _sequence = 1;
                 _sequence = 2;
             }
             else if (_sequence == 2 && Time.time - _outroStartTime > 4)
             {
                 _tilemap.SetTile(new Vector3Int(54, 8, 0), null);
                 _tilemap.SetTile(new Vector3Int(55, 8, 0), null);
+                Sound.Instance.PlayTileDestroy(Game.Instance.CurrentPlayer.AudioSource);
+
                 _sequence = 3;
             }
-            else if (_sequence == 3 && Time.time - _outroStartTime > 6)
+            else if (_sequence == 3 && Time.time - _outroStartTime > 4.5)
+            {
+                Sound.Instance.PlayFallIntoVoid(Game.Instance.CurrentPlayer.AudioSource);
+
+                _sequence = 4;
+            }
+            else if (_sequence == 4 && Time.time - _outroStartTime > 6)
             {
                 _portal.PerformPortal();
-                _sequence = 4;
+                _sequence = 5;
             }
         }
 

@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Jump: {fileID: 8300000, guid: 7dff5f9eb68712f4f9e2bfea640494c7, type: 3}
   Walk: {fileID: 8300000, guid: 300b6c590fdaed54681a1af0baf3ee61, type: 3}
-  Bump: {fileID: 8300000, guid: de9d59ee937cfe0488796c5bebdbafe4, type: 3}
+  Bump: {fileID: 8300000, guid: e615e08416320e5408156c09f757a35c, type: 3}
+  Die: {fileID: 8300000, guid: 1b4133d7febebdf4c8e0b39ff5b251de, type: 3}
+  Button: {fileID: 8300000, guid: 84d778b1eaac6c745ba75d3fc302c8e6, type: 3}
+  TileDestroy: {fileID: 8300000, guid: c83a89e316183b743ac0b1290529ce1d, type: 3}
+  FallIntoVoid: {fileID: 8300000, guid: 0df41293f0bc9414c8d19d8b04068916, type: 3}
