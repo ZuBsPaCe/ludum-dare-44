@@ -91,7 +91,7 @@ namespace zs.Main
         {
             if (level == 1 && !PlayerPrefs.HasKey("Act1 Intro Shown"))
             {
-                PlayerPrefs.SetInt("Act 1 Intro Shown", 1);
+                PlayerPrefs.SetInt("Act1 Intro Shown", 1);
                 PlayerPrefs.Save();
 
                 _startLevelAfterIntro = level;
@@ -104,7 +104,7 @@ namespace zs.Main
             }
             else if (level == 5 && !PlayerPrefs.HasKey("Act2 Intro Shown"))
             {
-                PlayerPrefs.SetInt("Act 2 Intro Shown", 1);
+                PlayerPrefs.SetInt("Act2 Intro Shown", 1);
                 PlayerPrefs.Save();
 
                 _startLevelAfterIntro = level;
@@ -116,7 +116,7 @@ namespace zs.Main
             }
             else if (level == 9 && !PlayerPrefs.HasKey("Act3 Intro Shown"))
             {
-                PlayerPrefs.SetInt("Act 3 Intro Shown", 1);
+                PlayerPrefs.SetInt("Act3 Intro Shown", 1);
                 PlayerPrefs.Save();
 
                 _startLevelAfterIntro = level;
