@@ -63,6 +63,7 @@ namespace zs.Helpers
 
             if (player != null)
             {
+                Sound.Instance.PlayFinished(player.AudioSource);
                 player.LevelDone();
             }
 

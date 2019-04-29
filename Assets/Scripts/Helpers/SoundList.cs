@@ -18,5 +18,6 @@ namespace zs.Assets.Scripts.Helpers
         public AudioClip TileDestroy = null;
         public AudioClip FallIntoVoid = null;
         public AudioClip JumpPad = null;
+        public AudioClip Finished = null;
     }
 }

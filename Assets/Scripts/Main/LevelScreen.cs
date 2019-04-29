@@ -40,8 +40,6 @@ namespace zs.Main
         private Button _act3_level2 = null;
         [SerializeField]
         private Button _act3_level3 = null;
-        [SerializeField]
-        private Button _act3_level4 = null;
 
         [SerializeField]
         private Status _statusLevel1 = null;
@@ -75,9 +73,6 @@ namespace zs.Main
 
         [SerializeField]
         private Status _statusLevel11 = null;
-
-        [SerializeField]
-        private Status _statusLevel12 = null;
 
         [SerializeField]
         private RectTransform _act2 = null;
@@ -227,7 +222,6 @@ namespace zs.Main
             Debug.Assert(_act3_level1);
             Debug.Assert(_act3_level2);
             Debug.Assert(_act3_level3);
-            Debug.Assert(_act3_level4);
 
             Debug.Assert(_statusLevel1);
             Debug.Assert(_statusLevel2);
@@ -240,7 +234,6 @@ namespace zs.Main
             Debug.Assert(_statusLevel9);
             Debug.Assert(_statusLevel10);
             Debug.Assert(_statusLevel11);
-            Debug.Assert(_statusLevel12);
 
             Debug.Assert(_act2);
             Debug.Assert(_act2Unlock);
@@ -272,7 +265,6 @@ namespace zs.Main
                 _act3_level1,
                 _act3_level2,
                 _act3_level3,
-                _act3_level4
             };
 
             _levelStatuses = new List<Status>
@@ -289,7 +281,6 @@ namespace zs.Main
                 _statusLevel9,
                 _statusLevel10,
                 _statusLevel11,
-                _statusLevel12,
             };
         }
 

@@ -79,6 +79,11 @@ namespace zs.Helpers
             source.PlayOneShot(_sounds.JumpPad);
         }
 
+        public void PlayFinished(AudioSource source)
+        {
+            source.PlayOneShot(_sounds.Finished);
+        }
+
         #endregion Public Methods
 
         #region MonoBehaviour
