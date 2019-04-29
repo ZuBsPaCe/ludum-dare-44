@@ -101,6 +101,9 @@ namespace zs.Main
         [SerializeField]
         private AudioSource _audioSource = null;
 
+        [SerializeField]
+        private Text _escapeButtonInfo = null;
+
         #endregion Serializable Fields
 
         #region Private Vars
@@ -293,6 +296,12 @@ namespace zs.Main
         void Start()
         {
             UpdatePlayerProgress();
+
+#if UNITY_STANDALONE
+            this._escapeButtonInfo.text = "Info: Press ESC to abort a level";
+#else
+            this._escapeButtonInfo.text = "Info: Press Q to abort a level";
+#endif
         }
 	
         void Update()

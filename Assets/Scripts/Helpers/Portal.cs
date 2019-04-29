@@ -168,10 +168,17 @@ namespace zs.Helpers
                 return;
             }
 
+            #if UNITY_STANDALONE
             if (Input.GetKey(KeyCode.Escape))
             {
                 SceneManager.LoadScene("Main");
             }
+            #else
+            if (Input.GetKey(KeyCode.Q))
+            {
+                SceneManager.LoadScene("Main");
+            }
+            #endif
         }
 
         #endregion MonoBehaviour
