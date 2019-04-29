@@ -200,6 +200,12 @@ namespace zs.Main
             UpdatePlayerProgress();
         }
 
+        public void BackToStartScreen()
+        {
+            MainMenu.ForceStartScreen = true;
+            _mainMenu.ShowStartScreen();
+        }
+
         #endregion Public Methods
 
         #region MonoBehaviour
@@ -293,11 +299,13 @@ namespace zs.Main
         {
             Game.Instance.PerformLifeCycle(ref _cycle, ref _red, ref _green, ref _blue, ref _life);
 
+#if UNITY_STANDALONE
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 MainMenu.ForceStartScreen = true;
                 _mainMenu.ShowStartScreen();
             }
+#endif
         }
 
         #endregion MonoBehaviour
