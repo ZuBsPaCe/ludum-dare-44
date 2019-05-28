@@ -113,6 +113,8 @@ namespace zs.Logic
 
         private float _maxWalkVolume;
 
+        private bool _improvedCharacterMovement = true;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -270,6 +272,13 @@ namespace zs.Logic
         void Start()
         {
             _spritePos = transform.position;
+
+            if (PlayerPrefs.HasKey("ImprovedCharacterMovement"))
+            {
+                _improvedCharacterMovement = PlayerPrefs.GetInt("ImprovedCharacterMovement") == 1;
+            }
+
+            _rigidbody.interpolation = _improvedCharacterMovement ? RigidbodyInterpolation2D.Interpolate : RigidbodyInterpolation2D.None;
         }
 
         void Update()
@@ -313,8 +322,19 @@ namespace zs.Logic
             }
 
 
-            _spritePos = Vector3.Lerp(_spritePos, transform.position, _spriteLerp * Time.deltaTime);
-            _spritesTransform.position = _spritePos;
+            if (!_improvedCharacterMovement)
+            {
+                _spritePos = Vector3.Lerp(_spritePos, transform.position, _spriteLerp * Time.deltaTime);
+                _spritesTransform.position = _spritePos;
+            }
+
+            if (_improvedCharacterMovement)
+            {
+                if (_isCarrying)
+                {
+                    _carriedPlayer.transform.position = transform.position.with_y(transform.position.y + 1f);
+                }
+            }
 
             float shiftEyes = _currentVelocity.x / 10;
             if (shiftEyes > 1)
@@ -359,7 +379,15 @@ namespace zs.Logic
             //Debug.Log("Velocity X: " + _currentVelocity.x.ToString("0.00"));
 
             Vector3 horVelocity = new Vector3(_currentVelocity.x, 0, 0);
-            horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
+
+            if (_improvedCharacterMovement)
+            {
+                horVelocity = _horTargetVelocity;
+            }
+            else
+            {
+                horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
+            }
 
 
             Vector3 verVelocity = new Vector3(0, _currentVelocity.y, 0);
@@ -389,7 +417,16 @@ namespace zs.Logic
             _currentVelocity = newVelocity;
 
 
-            Vector3 newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
+            Vector3 newPosition;
+
+            if (_improvedCharacterMovement)
+            {
+                newPosition =  _rigidbody.position.with_z(0) + _currentVelocity * Time.fixedDeltaTime;
+            }
+            else
+            {
+                newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
+            }
 
             if (downCollisionTag != "JumpPad" &&
                 newPosition.y < minY)
@@ -449,11 +486,21 @@ namespace zs.Logic
                 _currentVelocity.x = 0;
             }
 
-            transform.position = newPosition;
-
-            if (_isCarrying)
+            if (_improvedCharacterMovement)
             {
-                _carriedPlayer.transform.position = transform.position.with_y(transform.position.y + 1f);
+                _rigidbody.MovePosition(newPosition);
+            }
+            else
+            {
+                transform.position = newPosition;
+            }
+
+            if (!_improvedCharacterMovement)
+            {
+                if (_isCarrying)
+                {
+                    _carriedPlayer.transform.position = transform.position.with_y(transform.position.y + 1f);
+                }
             }
 
             if (_grounded && (_currentVelocity.x > 0.1 || _currentVelocity.x < -0.1f))

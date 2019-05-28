@@ -20,6 +20,9 @@ namespace zs.Main
         private Button _startOrContinueButton = null;
 
         [SerializeField]
+        private Toggle _improvedCharacterMovementToggle = null;
+
+        [SerializeField]
         private MainMenu _mainMenu = null;
 
         [SerializeField]
@@ -51,6 +54,9 @@ namespace zs.Main
                 return;
             }
 
+            PlayerPrefs.SetInt("ImprovedCharacterMovement", _improvedCharacterMovementToggle.isOn ? 1 : 0);
+            PlayerPrefs.Save();
+
             Sound.Instance.PlayButton(_audioSource);
 
             if (PlayerPrefs.HasKey("Level 0"))
@@ -70,6 +76,9 @@ namespace zs.Main
                 return;
             }
 
+            PlayerPrefs.SetInt("ImprovedCharacterMovement", _improvedCharacterMovementToggle.isOn ? 1 : 0);
+            PlayerPrefs.Save();
+
             Sound.Instance.PlayButton(_audioSource);
 
             PlayerPrefs.DeleteAll();
@@ -88,6 +97,7 @@ namespace zs.Main
             Debug.Assert(_life);
             Debug.Assert(_startNewButton);
             Debug.Assert(_startOrContinueButton);
+            Debug.Assert(_improvedCharacterMovementToggle);
             Debug.Assert(_mainMenu);
             Debug.Assert(_audioSource);
         }
@@ -104,6 +114,15 @@ namespace zs.Main
             {
                 _startNewButton.gameObject.SetActive(false);
                 _startOrContinueButton.GetComponentInChildren<Text>().text = "Start";
+            }
+
+            if (PlayerPrefs.HasKey("ImprovedCharacterMovement"))
+            {
+                _improvedCharacterMovementToggle.isOn = PlayerPrefs.GetInt("ImprovedCharacterMovement") == 1;
+            }
+            else
+            {
+                _improvedCharacterMovementToggle.isOn = true;
             }
         }
 	

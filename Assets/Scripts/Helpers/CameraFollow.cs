@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using zs.Logic;
 
 namespace zs.Helpers
 {
@@ -13,6 +14,8 @@ namespace zs.Helpers
 
         #region Private Vars
 
+        private bool _improvedCharacterMovement;
+
         #endregion Private Vars
 
         #region Public Vars
@@ -20,7 +23,10 @@ namespace zs.Helpers
         public Transform FollowTarget
         {
             get { return _followTarget; }
-            set { _followTarget = value; }
+            set
+            {
+                _followTarget = value;
+            }
         }
 
         #endregion Public Vars
@@ -36,19 +42,37 @@ namespace zs.Helpers
 
         void Start()
         {
+            if (PlayerPrefs.HasKey("ImprovedCharacterMovement"))
+            {
+                _improvedCharacterMovement = PlayerPrefs.GetInt("ImprovedCharacterMovement") == 1;
+            }
         }
 	
         void Update()
         {
-            if (_followTarget != null)
+            if (!_improvedCharacterMovement)
             {
-                transform.position = Vector3.Lerp(transform.position, _followTarget.transform.position.with_z(transform.position.z), 0.1f);
-
-                const float maxDistance = 4;
-                Vector3 targetDir = _followTarget.position.with_z(0) - transform.position.with_z(0);
-                if (targetDir.sqrMagnitude > maxDistance * maxDistance)
+                if (_followTarget != null)
                 {
-                    transform.position = (_followTarget.position - targetDir.with_z(0).normalized * maxDistance).with_z(transform.position.z);
+                    transform.position = Vector3.Lerp(transform.position, _followTarget.transform.position.with_z(transform.position.z), 0.1f);
+
+                    const float maxDistance = 4;
+                    Vector3 targetDir = _followTarget.position.with_z(0) - transform.position.with_z(0);
+                    if (targetDir.sqrMagnitude > maxDistance * maxDistance)
+                    {
+                        transform.position = (_followTarget.position - targetDir.with_z(0).normalized * maxDistance).with_z(transform.position.z);
+                    }
+                }
+            }
+        }
+
+        void LateUpdate()
+        {
+            if (_improvedCharacterMovement)
+            {
+                if (_followTarget != null)
+                {
+                    transform.position = _followTarget.transform.position.with_z(transform.position.z);
                 }
             }
         }
