@@ -283,6 +283,8 @@ namespace zs.Logic
 
         void Update()
         {
+            RunPhysicsUpdate();
+
             float hor = Input.GetAxisRaw("Horizontal");
 
             if (_levelDone)
@@ -349,7 +351,7 @@ namespace zs.Logic
             _aliveEyesSprite.transform.localPosition = _aliveEyesSprite.transform.localPosition.with_x(shiftEyes * 0.07f);
         }
 	
-        void FixedUpdate()
+        void RunPhysicsUpdate()
         {
             float initialXVelocity = _currentVelocity.x;
             float initialYVelocity = _currentVelocity.y;
@@ -386,12 +388,12 @@ namespace zs.Logic
             }
             else
             {
-                horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.fixedDeltaTime * _horAcceleration);
+                horVelocity = Vector3.Lerp(horVelocity, _horTargetVelocity, Time.deltaTime * _horAcceleration);
             }
 
 
             Vector3 verVelocity = new Vector3(0, _currentVelocity.y, 0);
-            verVelocity += Time.fixedDeltaTime * _gravity * Vector3.down;
+            verVelocity += Time.deltaTime * _gravity * Vector3.down;
 
 
             if (_jumpStarted)
@@ -419,35 +421,37 @@ namespace zs.Logic
 
             Vector3 newPosition;
 
-            if (_improvedCharacterMovement)
+            //if (_improvedCharacterMovement)
+            //{
+            //    newPosition =  _rigidbody.position.with_z(0) + _currentVelocity * Time.fixedDeltaTime;
+            //}
+            //else
             {
-                newPosition =  _rigidbody.position.with_z(0) + _currentVelocity * Time.fixedDeltaTime;
-            }
-            else
-            {
-                newPosition = transform.position + _currentVelocity * Time.fixedDeltaTime;
+                newPosition = transform.position + _currentVelocity * Time.deltaTime;
             }
 
-            if (downCollisionTag != "JumpPad" &&
-                newPosition.y < minY)
+            if (newPosition.y < minY)
             {
                 newPosition.y = minY;
 
-                _currentVelocity.y = 0;
-
-                if (!_grounded)
+                if (downCollisionTag != "JumpPad")
                 {
-                    Sound.Instance.PlayBump(_audioSource);
-                }
+                    _currentVelocity.y = 0;
 
-                //Debug.Log("Grounded");
-                _grounded = true;
-                _jumpStarted = false;
-                _jumping = false;
-            }
-            else
-            {
-                _grounded = false;
+                    if (!_grounded)
+                    {
+                        Sound.Instance.PlayBump(_audioSource);
+                    }
+
+                    //Debug.Log("Grounded");
+                    _grounded = true;
+                    _jumpStarted = false;
+                    _jumping = false;
+                }
+                else
+                {
+                    _grounded = false;
+                }
             }
 
             if (newPosition.y > maxY)
@@ -486,11 +490,11 @@ namespace zs.Logic
                 _currentVelocity.x = 0;
             }
 
-            if (_improvedCharacterMovement)
-            {
-                _rigidbody.MovePosition(newPosition);
-            }
-            else
+            //if (_improvedCharacterMovement)
+            //{
+            //    _rigidbody.MovePosition(newPosition);
+            //}
+            //else
             {
                 transform.position = newPosition;
             }
