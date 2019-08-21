@@ -3,15 +3,17 @@ Game entry for ludum-dare-44 "Your life is currency".
 
 ### About
 
-Life Cycle is a complex 2D platformer made in Unity in 48 hours for Ludum Dare 44. As you wander the woods something unexpected happens… Enjoy the adventure and have fun!
+Life Cycle is a complex 2D platformer made in Unity in 48 hours for [Ludum Dare 44](https://ldjam.com/events/ludum-dare/44/life-cycle). As you wander the woods something unexpected happens… Enjoy the adventure and have fun!
 
 ![Some screenshots of the game Life Cycle.](preview.gif)
 
 Beware: This one is difficult! But, if you’re stuck, think first…
 
+You can find more information about the game in the [blog entry](https://www.zubspace.com/blog/ludum-dare-44).
+
 ### Releases
 
-&rightarrow; [WebGL Release](https://www.zubspace.com/games/life-cycle?target=_blank) (Opens a new browser tab)
+&rightarrow; [WebGL Release](https://www.zubspace.com/games/life-cycle) (Runs in your browser)
 
 &rightarrow; [Windows Release](https://www.zubspace.com/user/games/life-cycle/life-cycle-ld44.zip) (Download, 20MB)
 
