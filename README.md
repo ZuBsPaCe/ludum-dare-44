@@ -1,5 +1,5 @@
 # ludum-dare-44
-My game entry for ludum-dare-44 "Your life is currency". The code is based on Unity 2018.3.13f1.
+My game entry for ludum-dare-44 "Your life is currency". The code is based on Unity 2018.4.7f1.
 
 ### About
 

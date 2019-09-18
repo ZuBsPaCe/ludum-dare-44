@@ -174,6 +174,11 @@ namespace zs.Logic
             else
             {
                 gameObject.tag = "DeadPlayerStuck";
+
+                if (_improvedCharacterMovement)
+                {
+                    _rigidbody.velocity = Vector2.zero;
+                }
             }
 
             Uncarry();
@@ -283,7 +288,10 @@ namespace zs.Logic
 
         void Update()
         {
-            RunPhysicsUpdate();
+            if (_improvedCharacterMovement)
+            {
+                RunPhysicsUpdate();
+            }
 
             float hor = Input.GetAxisRaw("Horizontal");
 
@@ -349,6 +357,14 @@ namespace zs.Logic
             }
 
             _aliveEyesSprite.transform.localPosition = _aliveEyesSprite.transform.localPosition.with_x(shiftEyes * 0.07f);
+        }
+
+        void FixedUpdate()
+        {
+            if (!_improvedCharacterMovement)
+            {
+                RunPhysicsUpdate();
+            }
         }
 	
         void RunPhysicsUpdate()
@@ -421,18 +437,22 @@ namespace zs.Logic
 
             Vector3 newPosition;
 
-            //if (_improvedCharacterMovement)
-            //{
-            //    newPosition =  _rigidbody.position.with_z(0) + _currentVelocity * Time.fixedDeltaTime;
-            //}
-            //else
+            if (!_improvedCharacterMovement)
             {
                 newPosition = transform.position + _currentVelocity * Time.deltaTime;
             }
+            else
+            {
+                newPosition = _rigidbody.position.with_z(0) + _currentVelocity * Time.deltaTime;
+            }
+
+
+            bool forceMovePosition = false;
 
             if (newPosition.y < minY)
             {
                 newPosition.y = minY;
+                forceMovePosition = true;
 
                 if (downCollisionTag != "JumpPad")
                 {
@@ -462,6 +482,7 @@ namespace zs.Logic
                 }
 
                 newPosition.y = maxY;
+                forceMovePosition = true;
 
                 _currentVelocity.y = 0;
                 _jumpStarted = false;
@@ -477,6 +498,8 @@ namespace zs.Logic
 
                 newPosition.x = maxX;
                 _currentVelocity.x = 0;
+
+                forceMovePosition = true;
             }
 
             if (newPosition.x < minX)
@@ -488,15 +511,27 @@ namespace zs.Logic
 
                 newPosition.x = minX;
                 _currentVelocity.x = 0;
+
+                forceMovePosition = true;
             }
 
-            //if (_improvedCharacterMovement)
-            //{
-            //    _rigidbody.MovePosition(newPosition);
-            //}
-            //else
+            if (!_improvedCharacterMovement)
             {
                 transform.position = newPosition;
+            }
+            else
+            {
+                _rigidbody.velocity = _currentVelocity;
+
+                if (forceMovePosition)
+                {
+                    _rigidbody.MovePosition(newPosition);
+                }
+
+                // Hint: Physics2D.autoSimulation is disabled in the Start() method of the PhysicSync Component.
+                //
+                // Hint: Physics2D.Simulate() will be called once at the end of the Update-Cycle
+                //       in the PhysicSync Component.
             }
 
             if (!_improvedCharacterMovement)
